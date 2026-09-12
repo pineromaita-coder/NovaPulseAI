@@ -1,122 +1,68 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Maita Nova IA</title>
+<title>Maita Nova IA</title>
 
-  <meta name="theme-color" content="#00d4ff">
-  <meta name="description" content="Maita Nova IA - MaitaCore">
+<meta name="theme-color" content="#00d4ff">
+<meta name="description" content="Maita Nova IA">
 
-  <link rel="manifest" href="manifest.json">
-
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="v3.css">
-  <link rel="stylesheet" href="v4.css">
-  <link rel="stylesheet" href="chat.css">
-  <link rel="stylesheet" href="dashboard.css">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <div class="grid"></div>
+<main class="app">
 
-  <main class="hud">
+  <div class="reactor">
+    <div class="ring ring1"></div>
+    <div class="ring ring2"></div>
+    <div class="core"></div>
+  </div>
 
-    <section class="reactor">
-      <div class="radar"></div>
-      <div class="ring ring1"></div>
-      <div class="ring ring2"></div>
-      <div class="ring ring3"></div>
+  <h1>Maita Nova IA</h1>
 
-      <div class="core">
-        <div class="eye"></div>
-      </div>
-    </section>
+  <p id="estado">MaitaCore ONLINE</p>
 
-    <h1>Maita Nova IA</h1>
-    <p id="estado">MaitaCore ONLINE</p>
+  <div id="clock">00:00:00</div>
 
-    <div id="clock">00:00:00</div>
+  <div class="prices">
 
-    <section class="prices">
-      <div>₿ BTC <span id="btc">Cargando...</span></div>
-      <div>⟠ ETH <span id="eth">Cargando...</span></div>
-      <div>🔶 BNB <span id="bnb">Cargando...</span></div>
-    </section>
+    <div class="card">
+      <span>₿ BTC</span>
+      <strong id="btc">--</strong>
+    </div>
 
-    <button id="mainButton" onclick="iniciarIA()">
-      🚀 Activar MaitaCore
-    </button>
+    <div class="card">
+      <span>⟠ ETH</span>
+      <strong id="eth">--</strong>
+    </div>
 
-  </main>
+    <div class="card">
+      <span>🔶 BNB</span>
+      <strong id="bnb">--</strong>
+    </div>
 
-  <!-- Scripts seguros -->
-  <script src="market.js"></script>
-  <script src="radar.js"></script>
-  <script src="voice.js"></script>
-  <script src="particles.js"></script>
-  <script src="terminal.js"></script>
-  <script src="sidepanel.js"></script>
-  <script src="app.js"></script>
+  </div>
 
-  <!-- Desactivados temporalmente -->
-  <!-- <script src="jarvis.js"></script> -->
-  <!-- <script src="loader.js"></script> -->
-  <!-- <script src="chat.js"></script> -->
-  <!-- <script src="dashboard.js"></script> -->
+  <button id="mainButton">
+    🚀 Activar MaitaCore
+  </button>
 
-  <!-- Respaldo -->
-  <script>
-    if (typeof iniciarIA !== "function") {
-      window.iniciarIA = async function () {
+</main>
 
-        const estado = document.getElementById("estado");
-        const boton = document.getElementById("mainButton");
+<script src="app.js"></script>
+<script src="market.js"></script>
+<script src="voice.js"></script>
 
-        const pasos = [
-          "Inicializando MaitaCore...",
-          "Escaneando sistema...",
-          "Conectando mercado...",
-          "Operador autorizado.",
-          "El futuro responde."
-        ];
-
-        boton.disabled = true;
-
-        for (const p of pasos) {
-          estado.textContent = p;
-          await new Promise(r => setTimeout(r, 700));
-        }
-
-        estado.textContent = "MaitaCore ACTIVO";
-        boton.textContent = "✅ Sistema Activo";
-        boton.disabled = false;
-
-        if (typeof hablar === "function") {
-          hablar("Operador David autorizado. MaitaCore activo.");
-        }
-      };
-    }
-
-    function reloj() {
-      document.getElementById("clock").textContent =
-        new Date().toLocaleTimeString("es-ES");
-    }
-
-    reloj();
-    setInterval(reloj, 1000);
-  </script>
-
-  <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("sw.js").catch(() => {});
-      });
-    }
-  </script>
+<script>
+if("serviceWorker" in navigator){
+ navigator.serviceWorker.register("sw.js").catch(()=>{});
+}
+</script>
 
 </body>
 </html>
