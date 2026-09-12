@@ -1,15 +1,33 @@
-function hablar(texto){
+// MAITA NOVA IA - Voice Engine
 
-if(!("speechSynthesis" in window)) return;
+let vozLista = null;
 
-const voz = new SpeechSynthesisUtterance(texto);
+function cargarVoz() {
+  const voces = speechSynthesis.getVoices();
 
-voz.lang="es-ES";
-voz.rate=.95;
-
-speechSynthesis.cancel();
-speechSynthesis.speak(voz);
-
+  vozLista =
+    voces.find(v => v.lang.startsWith("es")) ||
+    voces.find(v => v.lang.startsWith("pt")) ||
+    voces[0];
 }
 
-window.hablar=hablar;
+if ("speechSynthesis" in window) {
+  cargarVoz();
+  speechSynthesis.onvoiceschanged = cargarVoz;
+}
+
+function hablar(texto) {
+  if (!("speechSynthesis" in window)) return;
+
+  speechSynthesis.cancel();
+
+  const mensaje = new SpeechSynthesisUtterance(texto);
+
+  if (vozLista) mensaje.voice = vozLista;
+
+  mensaje.lang = vozLista?.lang || "es-ES";
+  mensaje.rate = 0.92;
+  mensaje.pitch = 0.9;
+
+  speechSynthesis.speak(mensaje);
+}
