@@ -1,4 +1,4 @@
-// MAITA NOVA IA - FIX BOTÓN
+// MAITA NOVA IA - FIX DEFINITIVO
 
 const mensajes = [
   "Inicializando MaitaCore...",
@@ -8,19 +8,18 @@ const mensajes = [
   "El futuro responde."
 ];
 
-function esperar(ms){
-  return new Promise(r => setTimeout(r, ms));
-}
+const esperar = ms => new Promise(r => setTimeout(r, ms));
 
-// La hacemos global para el botón del HTML
-window.iniciarIA = async function(){
+window.iniciarIA = async function () {
 
   const boton = document.getElementById("mainButton");
-  const estado = document.querySelector("main p");
+  const estado = document.querySelector(".hud p");
+
+  if (!boton || !estado) return;
 
   boton.disabled = true;
 
-  for(const texto of mensajes){
+  for (const texto of mensajes) {
     estado.textContent = texto;
     await esperar(700);
   }
@@ -34,13 +33,17 @@ window.iniciarIA = async function(){
   }
 };
 
+// Asegura que el botón funcione incluso en Telegram
+window.addEventListener("load", () => {
+  const boton = document.getElementById("mainButton");
+  if (boton) boton.onclick = window.iniciarIA;
+});
+
 // Reloj
-function actualizarReloj(){
-  const reloj = document.getElementById("clock");
-  if(reloj){
-    reloj.textContent = new Date().toLocaleTimeString("es-ES");
-  }
+function reloj() {
+  const r = document.getElementById("clock");
+  if (r) r.textContent = new Date().toLocaleTimeString("es-ES");
 }
 
-actualizarReloj();
-setInterval(actualizarReloj,1000);
+reloj();
+setInterval(reloj, 1000);
