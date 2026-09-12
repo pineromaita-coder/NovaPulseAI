@@ -10,10 +10,8 @@
   <meta name="theme-color" content="#00d4ff">
   <meta name="description" content="Maita Nova IA - MaitaCore">
 
-  <!-- PWA -->
   <link rel="manifest" href="manifest.json">
 
-  <!-- Estilos -->
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="v3.css">
   <link rel="stylesheet" href="v4.css">
@@ -23,16 +21,12 @@
 
 <body>
 
-  <!-- Fondo -->
   <div class="grid"></div>
 
-  <!-- Pantalla principal -->
   <main class="hud">
 
-    <!-- Reactor holográfico -->
     <section class="reactor">
       <div class="radar"></div>
-
       <div class="ring ring1"></div>
       <div class="ring ring2"></div>
       <div class="ring ring3"></div>
@@ -42,47 +36,84 @@
       </div>
     </section>
 
-    <!-- Marca -->
     <h1>Maita Nova IA</h1>
-    <p>MaitaCore ONLINE</p>
+    <p id="estado">MaitaCore ONLINE</p>
 
-    <!-- Reloj -->
     <div id="clock">00:00:00</div>
 
-    <!-- Mercado -->
     <section class="prices">
       <div>₿ BTC <span id="btc">Cargando...</span></div>
       <div>⟠ ETH <span id="eth">Cargando...</span></div>
       <div>🔶 BNB <span id="bnb">Cargando...</span></div>
     </section>
 
-    <!-- Botón principal -->
     <button id="mainButton" onclick="iniciarIA()">
       🚀 Activar MaitaCore
     </button>
 
   </main>
 
-  <!-- Scripts -->
+  <!-- Scripts seguros -->
   <script src="market.js"></script>
   <script src="radar.js"></script>
   <script src="voice.js"></script>
   <script src="particles.js"></script>
   <script src="terminal.js"></script>
   <script src="sidepanel.js"></script>
-  <script src="jarvis.js"></script>
-  <script src="loader.js"></script>
-  <script src="chat.js"></script>
-  <script src="dashboard.js"></script>
   <script src="app.js"></script>
 
-  <!-- Service Worker -->
+  <!-- Desactivados temporalmente -->
+  <!-- <script src="jarvis.js"></script> -->
+  <!-- <script src="loader.js"></script> -->
+  <!-- <script src="chat.js"></script> -->
+  <!-- <script src="dashboard.js"></script> -->
+
+  <!-- Respaldo -->
+  <script>
+    if (typeof iniciarIA !== "function") {
+      window.iniciarIA = async function () {
+
+        const estado = document.getElementById("estado");
+        const boton = document.getElementById("mainButton");
+
+        const pasos = [
+          "Inicializando MaitaCore...",
+          "Escaneando sistema...",
+          "Conectando mercado...",
+          "Operador autorizado.",
+          "El futuro responde."
+        ];
+
+        boton.disabled = true;
+
+        for (const p of pasos) {
+          estado.textContent = p;
+          await new Promise(r => setTimeout(r, 700));
+        }
+
+        estado.textContent = "MaitaCore ACTIVO";
+        boton.textContent = "✅ Sistema Activo";
+        boton.disabled = false;
+
+        if (typeof hablar === "function") {
+          hablar("Operador David autorizado. MaitaCore activo.");
+        }
+      };
+    }
+
+    function reloj() {
+      document.getElementById("clock").textContent =
+        new Date().toLocaleTimeString("es-ES");
+    }
+
+    reloj();
+    setInterval(reloj, 1000);
+  </script>
+
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
-        navigator.serviceWorker.register("sw.js")
-          .then(() => console.log("✅ Maita Nova IA lista"))
-          .catch(err => console.log("SW:", err));
+        navigator.serviceWorker.register("sw.js").catch(() => {});
       });
     }
   </script>
