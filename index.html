@@ -3,10 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>NovaPulse AI | JARVIS</title>
+
+<meta name="theme-color" content="#00d4ff">
+<meta name="description" content="NovaPulse AI - Sistema JARVIS">
+
+<link rel="manifest" href="manifest.json">
 
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="v3.css">
+<link rel="stylesheet" href="v4.css">
 </head>
 
 <body>
@@ -34,9 +41,9 @@
     <div id="clock">00:00:00</div>
 
     <div class="prices">
-        <div>₿ <span id="btc">...</span></div>
-        <div>⟠ <span id="eth">...</span></div>
-        <div>🔶 <span id="bnb">...</span></div>
+        <div>₿ <span id="btc">Cargando...</span></div>
+        <div>⟠ <span id="eth">Cargando...</span></div>
+        <div>🔶 <span id="bnb">Cargando...</span></div>
     </div>
 
     <button onclick="iniciarIA()">
@@ -51,7 +58,17 @@
 <script src="particles.js"></script>
 <script src="terminal.js"></script>
 <script src="sidepanel.js"></script>
+<script src="jarvis.js"></script>
+<script src="loader.js"></script>
 <script src="app.js"></script>
+
+<script>
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js")
+        .then(() => console.log("NovaPulse listo"))
+        .catch(err => console.log(err));
+}
+</script>
 
 </body>
 </html>
