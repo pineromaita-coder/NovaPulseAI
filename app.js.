@@ -1,24 +1,18 @@
-const core=document.querySelector(".arc-core");
+const core = document.querySelector(".arc-core");
 
-document.addEventListener("pointermove",e=>{
+document.addEventListener("pointermove", (e) => {
+  const x = (e.clientX / window.innerWidth - 0.5) * 20;
+  const y = (e.clientY / window.innerHeight - 0.5) * 20;
 
-const x=(e.clientX/window.innerWidth-.5)*25;
-const y=(e.clientY/window.innerHeight-.5)*25;
-
-core.style.transform=`translate(${x}px,${y}px)`;
-
+  core.style.transform = `translate(${x}px, ${y}px) scale(1.05)`;
 });
 
-function saludo(){
-
-const synth=window.speechSynthesis;
-
-const voz=new SpeechSynthesisUtterance(
-"Bienvenido operador. Nova Pulse AI iniciado."
-);
-
-voz.lang="es-ES";
-
-synth.speak(voz);
-
+function saludo() {
+  if ("speechSynthesis" in window) {
+    const voz = new SpeechSynthesisUtterance(
+      "Bienvenido operador. Nova Pulse AI iniciado."
+    );
+    voz.lang = "es-ES";
+    speechSynthesis.speak(voz);
+  }
 }
