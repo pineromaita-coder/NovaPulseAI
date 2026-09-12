@@ -1,60 +1,64 @@
-const panel = document.createElement("div");
-panel.id = "chat-panel";
+const btn=document.createElement("button");
+btn.id="chat-btn";
+btn.innerHTML="💬";
 
-panel.innerHTML = `
-<div id="chat-header">🤖 NovaPulse</div>
+const panel=document.createElement("div");
+panel.id="chat-panel";
+
+panel.innerHTML=`
+<div id="chat-header">Maita Nova IA</div>
 
 <div id="chat-body">
-  <div class="msg ia">NovaCore listo. ¿En qué puedo ayudarte?</div>
+<div class="msg ia">Operador David. MaitaCore listo.</div>
 </div>
 
 <div id="chat-input">
-  <input id="msg" placeholder="Escribe un comando...">
-  <button id="send">➤</button>
+<input id="textoIA" placeholder="Pregunta lo que quieras...">
+<button id="enviarIA">➤</button>
 </div>
 `;
 
-document.body.appendChild(panel);
+document.body.append(btn,panel);
 
-const body = document.getElementById("chat-body");
-const input = document.getElementById("msg");
+btn.onclick=()=>panel.classList.toggle("open");
 
-function responder(txt){
+const body=document.getElementById("chat-body");
+const input=document.getElementById("textoIA");
 
-const r = txt.toLowerCase();
+function respuesta(t){
 
-if(r.includes("btc"))
-return "Bitcoin está disponible desde el panel superior.";
+const txt=t.toLowerCase();
 
-if(r.includes("eth"))
-return "Ethereum se actualiza automáticamente.";
+if(txt.includes("btc")) return "Consultando Bitcoin...";
+if(txt.includes("eth")) return "Ethereum conectado.";
+if(txt.includes("bnb")) return "BNB disponible.";
+if(txt.includes("hola")) return "Hola David.";
 
-if(r.includes("bnb"))
-return "BNB conectado al mercado.";
-
-if(r.includes("hola"))
-return "Hola Operador.";
-
-return "NovaCore procesó tu mensaje.";
+return "MaitaCore está procesando tu solicitud.";
 }
 
-document.getElementById("send").onclick = () => {
+function enviar(){
 
 if(!input.value.trim()) return;
 
-body.innerHTML += `<div class="msg yo">${input.value}</div>`;
+body.innerHTML+=`<div class="msg user">${input.value}</div>`;
 
-const texto = input.value;
+const texto=input.value;
 
-input.value = "";
+input.value="";
 
 setTimeout(()=>{
 
-body.innerHTML +=
-`<div class="msg ia">${responder(texto)}</div>`;
+body.innerHTML+=`<div class="msg ia">${respuesta(texto)}</div>`;
 
-body.scrollTop = body.scrollHeight;
+body.scrollTop=body.scrollHeight;
 
-},400);
+},500);
 
-};
+}
+
+document.getElementById("enviarIA").onclick=enviar;
+
+input.addEventListener("keydown",e=>{
+if(e.key==="Enter") enviar();
+});
