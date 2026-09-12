@@ -1,0 +1,36 @@
+.eye{animation:blink 5s infinite;}
+@keyframes blink{
+0%,95%,100%{height:55px;}
+97%{height:8px;}
+}
+
+.scan{
+position:absolute;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+width:260px;
+height:260px;
+border-radius:50%;
+background:conic-gradient(
+transparent 0deg,
+rgba(0,255,255,.45) 18deg,
+transparent 40deg);
+animation:spin 2.8s linear infinite;
+mix-blend-mode:screen;
+}
+
+.status-card{
+position:fixed;
+top:20px;
+right:20px;
+padding:14px;
+border-radius:14px;
+background:#041523cc;
+border:1px solid #00d4ff55;
+backdrop-filter:blur(10px);
+font-size:13px;
+z-index:60;
+}
+
+.status-card div{margin:6px 0;}
