@@ -1,4 +1,5 @@
 const reactor=document.querySelector(".reactor");
+const eye=document.querySelector(".eye");
 
 document.addEventListener("pointermove",(e)=>{
 
@@ -6,6 +7,10 @@ const x=(e.clientX/window.innerWidth-.5)*18;
 const y=(e.clientY/window.innerHeight-.5)*18;
 
 reactor.style.transform=`translate(${x}px,${y}px)`;
+
+eye.style.transform=
+`translate(calc(-50% + ${x*.5}px),
+calc(-50% + ${y*.5}px))`;
 
 });
 
@@ -18,9 +23,19 @@ const voz=new SpeechSynthesisUtterance(
 );
 
 voz.lang="es-ES";
+
 speechSynthesis.cancel();
 speechSynthesis.speak(voz);
 
 }
 
 }
+
+setInterval(()=>{
+
+const d=new Date();
+
+document.getElementById("clock").innerHTML=
+d.toLocaleTimeString("es-ES");
+
+},1000);
