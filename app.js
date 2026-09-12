@@ -1,4 +1,4 @@
-// MAITA NOVA IA - App Core V1
+// MAITA NOVA IA - App Core V2
 
 const mensajes = [
   "Inicializando MaitaCore...",
@@ -32,19 +32,9 @@ async function iniciarIA(){
   boton.innerText = "Sistema Activo";
   boton.disabled = false;
 
-  // Voz (Android)
-  if ("speechSynthesis" in window) {
-    speechSynthesis.cancel();
-
-    const voz = new SpeechSynthesisUtterance(
-      "Operador David autorizado. MaitaCore activo. El futuro responde."
-    );
-
-    voz.lang = "es-ES";
-    voz.rate = 0.95;
-    voz.pitch = 0.9;
-
-    speechSynthesis.speak(voz);
+  // Usa el motor de voz de voice.js
+  if (typeof hablar === "function") {
+    hablar("Operador David autorizado. MaitaCore activo. El futuro responde.");
   }
 }
 
