@@ -1,28 +1,42 @@
-const CACHE="novapulse-v1";
+// MAITA NOVA IA V1 - Service Worker
 
-const FILES=[
-"./",
-"./index.html",
-"./style.css",
-"./app.js",
-"./market.js",
-"./radar.js",
-"./voice.js",
-"./terminal.js",
-"./sidepanel.js",
-"./particles.js",
-"./jarvis.js",
-"./v4.css"
+const CACHE = "maita-v1";
+
+const archivos = [
+  "./",
+  "./index.html",
+  "./style.css",
+  "./app.js",
+  "./market.js",
+  "./voice.js",
+  "./manifest.json"
 ];
 
-self.addEventListener("install",e=>{
-e.waitUntil(
-caches.open(CACHE).then(c=>c.addAll(FILES))
-);
+// Instalar
+self.addEventListener("install", event => {
+  event.waitUntil(
+    caches.open(CACHE).then(cache => cache.addAll(archivos))
+  );
+  self.skipWaiting();
 });
 
-self.addEventListener("fetch",e=>{
-e.respondWith(
-caches.match(e.request).then(r=>r||fetch(e.request))
-);
+// Activar
+self.addEventListener("activate", event => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(
+        keys.map(key => key !== CACHE ? caches.delete(key) : null)
+      )
+    )
+  );
+  self.clients.claim();
+});
+
+// Cache primero, red después
+self.addEventListener("fetch", event => {
+  event.respondWith(
+    caches.match(event.request).then(respuesta => {
+      return respuesta || fetch(event.request);
+    })
+  );
 });
