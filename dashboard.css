@@ -1,13 +1,13 @@
 .dashboard{
   width:100%;
   max-width:360px;
-  margin:20px auto;
-  padding:16px;
+  margin:18px auto 0;
+  padding:0 16px;
 }
 
 .cards{
   display:grid;
-  grid-template-columns:1fr 1fr;
+  grid-template-columns:repeat(2,1fr);
   gap:14px;
 }
 
@@ -16,18 +16,12 @@
   border:1px solid rgba(0,212,255,.35);
   border-radius:18px;
   padding:18px;
-  min-height:95px;
+  min-height:100px;
   display:flex;
   flex-direction:column;
   justify-content:center;
-  text-align:center;
+  align-items:center;
   color:white;
-  transition:.25s;
-}
-
-.card:active{
-  transform:scale(.96);
-  box-shadow:0 0 18px rgba(0,212,255,.5);
 }
 
 .card .icon{
@@ -43,6 +37,7 @@
   color:#8fdfff;
   font-size:12px;
   margin-top:4px;
+  text-align:center;
 }
 
 .action-btn{
