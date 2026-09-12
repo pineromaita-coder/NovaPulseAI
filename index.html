@@ -26,10 +26,10 @@
   <!-- Fondo -->
   <div class="grid"></div>
 
-  <!-- Interfaz principal -->
+  <!-- Pantalla principal -->
   <main class="hud">
 
-    <!-- Reactor -->
+    <!-- Reactor holográfico -->
     <section class="reactor">
       <div class="radar"></div>
 
@@ -51,13 +51,13 @@
 
     <!-- Mercado -->
     <section class="prices">
-      <div>₿ BTC <span id="btc">...</span></div>
-      <div>⟠ ETH <span id="eth">...</span></div>
-      <div>🔶 BNB <span id="bnb">...</span></div>
+      <div>₿ BTC <span id="btc">Cargando...</span></div>
+      <div>⟠ ETH <span id="eth">Cargando...</span></div>
+      <div>🔶 BNB <span id="bnb">Cargando...</span></div>
     </section>
 
     <!-- Botón principal -->
-    <button onclick="iniciarIA()">
+    <button id="mainButton" onclick="iniciarIA()">
       🚀 Activar MaitaCore
     </button>
 
@@ -81,8 +81,8 @@
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
         navigator.serviceWorker.register("sw.js")
-          .then(() => console.log("Maita Nova IA lista"))
-          .catch((error) => console.log(error));
+          .then(() => console.log("✅ Maita Nova IA lista"))
+          .catch(err => console.log("SW:", err));
       });
     }
   </script>
