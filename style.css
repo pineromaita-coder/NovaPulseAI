@@ -5,24 +5,40 @@ height:100vh;
 overflow:hidden;
 font-family:Arial,sans-serif;
 background:
-radial-gradient(circle at center,#062347,#01050d);
+radial-gradient(circle,#082449,#01040d);
 display:flex;
 justify-content:center;
 align-items:center;
+color:white;
 }
 
 .grid{
 position:fixed;
 inset:0;
 background:
-linear-gradient(rgba(0,212,255,.08) 1px,transparent 1px),
-linear-gradient(90deg,rgba(0,212,255,.08) 1px,transparent 1px);
+linear-gradient(rgba(0,212,255,.06) 1px,transparent 1px),
+linear-gradient(90deg,rgba(0,212,255,.06) 1px,transparent 1px);
 background-size:40px 40px;
-animation:grid 10s linear infinite;
+animation:grid 12s linear infinite;
 }
 
 @keyframes grid{
 to{transform:translateY(40px);}
+}
+
+.particles{
+position:fixed;
+inset:0;
+pointer-events:none;
+background:
+radial-gradient(circle,#00d4ff44 2px,transparent 3px);
+background-size:120px 120px;
+animation:particles 30s linear infinite;
+opacity:.35;
+}
+
+@keyframes particles{
+to{transform:translateY(-120px);}
 }
 
 .hud{
@@ -33,8 +49,8 @@ text-align:center;
 
 .reactor{
 position:relative;
-width:240px;
-height:240px;
+width:260px;
+height:260px;
 margin:auto;
 }
 
@@ -47,11 +63,26 @@ width:150px;
 height:150px;
 border-radius:50%;
 background:
-radial-gradient(circle,#a8ffff,#1ebfff,#004b8d);
+radial-gradient(circle,#b8ffff,#29c5ff,#00519a);
 box-shadow:
-0 0 35px cyan,
-0 0 80px cyan,
-0 0 150px rgba(0,212,255,.5);
+0 0 40px cyan,
+0 0 90px cyan,
+0 0 160px #00d4ff66;
+overflow:hidden;
+}
+
+.eye{
+position:absolute;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+width:55px;
+height:55px;
+border-radius:50%;
+background:
+radial-gradient(circle,#fff,#7dfcff,#0088ff);
+box-shadow:0 0 30px white;
+transition:.1s;
 }
 
 .ring{
@@ -65,22 +96,38 @@ transform:translate(-50%,-50%);
 .ring1{
 width:190px;
 height:190px;
-border:2px solid rgba(0,255,255,.45);
+border:2px solid #00d4ff66;
 animation:spin 6s linear infinite;
 }
 
 .ring2{
 width:220px;
 height:220px;
-border:2px dashed rgba(0,180,255,.35);
-animation:spinReverse 9s linear infinite;
+border:2px dashed #00d4ff55;
+animation:spinReverse 10s linear infinite;
 }
 
 .ring3{
 width:250px;
 height:250px;
-border:1px solid rgba(0,255,255,.15);
+border:1px solid #00d4ff22;
 animation:pulse 2s infinite;
+}
+
+.radar{
+position:absolute;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+width:260px;
+height:260px;
+border-radius:50%;
+background:
+conic-gradient(
+transparent 0deg,
+rgba(0,255,255,.35) 18deg,
+transparent 40deg);
+animation:spin 3s linear infinite;
 }
 
 @keyframes spin{
@@ -92,35 +139,48 @@ to{transform:translate(-50%,-50%) rotate(-360deg);}
 }
 
 @keyframes pulse{
-50%{transform:translate(-50%,-50%) scale(1.04);}
+50%{
+transform:translate(-50%,-50%) scale(1.03);
+}
 }
 
 h1{
-margin-top:35px;
-font-size:42px;
+margin-top:40px;
+font-size:40px;
 color:#00d4ff;
-text-shadow:0 0 18px cyan;
+text-shadow:0 0 20px cyan;
 }
 
-p{
-margin:14px 0 24px;
-color:#8fdfff;
-letter-spacing:2px;
+#clock{
+margin-top:8px;
+color:#9eefff;
+letter-spacing:3px;
+}
+
+.prices{
+margin:25px 0;
+display:flex;
+justify-content:center;
+gap:18px;
+flex-wrap:wrap;
+}
+
+.prices div{
+padding:10px 16px;
+border:1px solid #00d4ff55;
+border-radius:20px;
+background:#03111c88;
+backdrop-filter:blur(8px);
 }
 
 button{
-padding:15px 36px;
+padding:15px 34px;
 border:none;
-border-radius:40px;
-background:linear-gradient(90deg,#00d4ff,#6ffcff);
-color:#00111a;
+border-radius:35px;
+background:
+linear-gradient(90deg,#00d4ff,#66f7ff);
+color:#00131c;
 font-size:17px;
 font-weight:bold;
 box-shadow:0 0 20px cyan;
-cursor:pointer;
-transition:.25s;
-}
-
-button:active{
-transform:scale(.95);
 }
