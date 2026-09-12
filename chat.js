@@ -1,64 +1,92 @@
-const btn=document.createElement("button");
-btn.id="chat-btn";
-btn.innerHTML="💬";
+// MAITA NOVA IA - Sprint 6
 
-const panel=document.createElement("div");
-panel.id="chat-panel";
+const btn = document.createElement("button");
+btn.id = "chat-btn";
+btn.innerHTML = "💬";
 
-panel.innerHTML=`
-<div id="chat-header">Maita Nova IA</div>
+const panel = document.createElement("div");
+panel.id = "chat-panel";
+
+panel.innerHTML = `
+<div id="chat-header">
+  <span>🤖 Maita Nova IA</span>
+  <button id="close-chat">✕</button>
+</div>
 
 <div id="chat-body">
-<div class="msg ia">Operador David. MaitaCore listo.</div>
+  <div class="msg ia">
+    Operador David. MaitaCore listo.
+  </div>
 </div>
 
 <div id="chat-input">
-<input id="textoIA" placeholder="Pregunta lo que quieras...">
-<button id="enviarIA">➤</button>
+  <input id="textoIA"
+         placeholder="Escribe aquí...">
+  <button id="enviarIA">➤</button>
 </div>
 `;
 
-document.body.append(btn,panel);
+document.body.append(btn, panel);
 
-btn.onclick=()=>panel.classList.toggle("open");
+const body = panel.querySelector("#chat-body");
+const input = panel.querySelector("#textoIA");
 
-const body=document.getElementById("chat-body");
-const input=document.getElementById("textoIA");
+btn.onclick = () => panel.classList.add("open");
+panel.querySelector("#close-chat").onclick = () => panel.classList.remove("open");
 
-function respuesta(t){
+const respuestas = {
+  btc: "Consultando Bitcoin...",
+  eth: "Ethereum conectado.",
+  bnb: "BNB disponible.",
+  hola: "Hola David. ¿En qué trabajamos hoy?"
+};
 
-const txt=t.toLowerCase();
+function escribirIA(texto){
 
-if(txt.includes("btc")) return "Consultando Bitcoin...";
-if(txt.includes("eth")) return "Ethereum conectado.";
-if(txt.includes("bnb")) return "BNB disponible.";
-if(txt.includes("hola")) return "Hola David.";
+  const msg = document.createElement("div");
+  msg.className = "msg ia";
+  body.appendChild(msg);
 
-return "MaitaCore está procesando tu solicitud.";
+  let i = 0;
+
+  const efecto = setInterval(() => {
+
+    msg.textContent += texto[i];
+    i++;
+
+    body.scrollTop = body.scrollHeight;
+
+    if(i >= texto.length){
+      clearInterval(efecto);
+    }
+
+  },18);
+
 }
 
 function enviar(){
 
-if(!input.value.trim()) return;
+  const texto = input.value.trim();
 
-body.innerHTML+=`<div class="msg user">${input.value}</div>`;
+  if(!texto) return;
 
-const texto=input.value;
+  body.innerHTML +=
+    `<div class="msg user">${texto}</div>`;
 
-input.value="";
+  input.value = "";
 
-setTimeout(()=>{
+  const t = texto.toLowerCase();
 
-body.innerHTML+=`<div class="msg ia">${respuesta(texto)}</div>`;
+  let respuesta =
+    respuestas[t] ||
+    "MaitaCore está procesando tu solicitud.";
 
-body.scrollTop=body.scrollHeight;
-
-},500);
+  setTimeout(() => escribirIA(respuesta),400);
 
 }
 
-document.getElementById("enviarIA").onclick=enviar;
+panel.querySelector("#enviarIA").onclick = enviar;
 
 input.addEventListener("keydown",e=>{
-if(e.key==="Enter") enviar();
+  if(e.key==="Enter") enviar();
 });
