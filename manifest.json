@@ -1,0 +1,16 @@
+{
+  "name": "NovaPulse AI",
+  "short_name": "NovaPulse",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#01040d",
+  "theme_color": "#00d4ff",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
