@@ -1,12 +1,18 @@
 {
-  "name": "NovaPulse AI",
-  "short_name": "NovaPulse",
+  "name": "Maita Nova IA",
+  "short_name": "Maita Nova",
+  "description": "Asistente inteligente MaitaCore",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#01040d",
+  "background_color": "#050b12",
   "theme_color": "#00d4ff",
   "orientation": "portrait",
   "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
