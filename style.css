@@ -1,0 +1,22 @@
+body{
+  margin:0;
+  background:#030611;
+  overflow:hidden;
+  font-family:Arial,sans-serif;
+  color:white;
+}
+
+.arc-core{
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  background:radial-gradient(circle,#7de8ff,#00aaff,#001b33);
+  box-shadow:0 0 80px cyan;
+  animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+  50%{
+    transform:scale(1.08);
+  }
+}
