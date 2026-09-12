@@ -1,0 +1,27 @@
+async function cargar(){
+
+const pares=["BTCUSDT","ETHUSDT","BNBUSDT"];
+const ids=["btc","eth","bnb"];
+
+for(let i=0;i<pares.length;i++){
+
+try{
+
+const r=await fetch(
+`https://api.binance.com/api/v3/ticker/price?symbol=${pares[i]}`
+);
+
+const j=await r.json();
+
+document.getElementById(ids[i]).innerHTML=
+Number(j.price).toFixed(2);
+
+}catch{}
+
+}
+
+}
+
+cargar();
+
+setInterval(cargar,5000);
