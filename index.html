@@ -3,49 +3,54 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NovaPulse AI</title>
+<title>NovaPulse AI | JARVIS</title>
 
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="v3.css">
 </head>
+
 <body>
 
 <div class="grid"></div>
-<div class="particles"></div>
 
 <div class="hud">
 
-<div class="reactor">
+    <div class="reactor">
 
-<div class="ring ring1"></div>
-<div class="ring ring2"></div>
-<div class="ring ring3"></div>
+        <div class="radar"></div>
 
-<div class="core">
-<div class="eye"></div>
-</div>
+        <div class="ring ring1"></div>
+        <div class="ring ring2"></div>
+        <div class="ring ring3"></div>
 
-<div class="radar"></div>
+        <div class="core">
+            <div class="eye"></div>
+        </div>
 
-</div>
+    </div>
 
-<h1>NovaPulse AI</h1>
+    <h1>NovaPulse AI</h1>
 
-<div id="clock"></div>
+    <div id="clock">00:00:00</div>
 
-<div class="prices">
-<div>₿ <span id="btc">...</span></div>
-<div>⟠ <span id="eth">...</span></div>
-<div>🔶 <span id="bnb">...</span></div>
-</div>
+    <div class="prices">
+        <div>₿ <span id="btc">...</span></div>
+        <div>⟠ <span id="eth">...</span></div>
+        <div>🔶 <span id="bnb">...</span></div>
+    </div>
 
-<button onclick="iniciarIA()">
-🚀 Iniciar IA
-</button>
+    <button onclick="iniciarIA()">
+        🚀 Iniciar IA
+    </button>
 
 </div>
 
 <script src="market.js"></script>
 <script src="radar.js"></script>
+<script src="voice.js"></script>
+<script src="particles.js"></script>
+<script src="terminal.js"></script>
+<script src="sidepanel.js"></script>
 <script src="app.js"></script>
 
 </body>
