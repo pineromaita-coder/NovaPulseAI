@@ -1,66 +1,91 @@
+#chat-btn{
+ position:fixed;
+ right:16px;
+ bottom:16px;
+ width:56px;
+ height:56px;
+ border:none;
+ border-radius:50%;
+ background:linear-gradient(135deg,#00d4ff,#0077ff);
+ color:white;
+ font-size:24px;
+ box-shadow:0 0 20px rgba(0,212,255,.5);
+ z-index:100;
+}
+
 #chat-panel{
-position:fixed;
-left:20px;
-bottom:20px;
-width:300px;
-height:340px;
-background:#02131dcc;
-border:1px solid #00d4ff55;
-border-radius:18px;
-backdrop-filter:blur(10px);
-overflow:hidden;
-z-index:90;
+ position:fixed;
+ left:0;
+ right:0;
+ bottom:0;
+ height:75vh;
+ background:#07131de8;
+ border-radius:24px 24px 0 0;
+ border-top:1px solid rgba(0,212,255,.35);
+ backdrop-filter:blur(14px);
+ display:flex;
+ flex-direction:column;
+ transform:translateY(100%);
+ transition:.35s ease;
+ z-index:101;
+}
+
+#chat-panel.open{
+ transform:translateY(0);
 }
 
 #chat-header{
-padding:12px;
-background:#00d4ff22;
-font-weight:bold;
+ padding:18px;
+ text-align:center;
+ font-weight:bold;
+ color:#8fdfff;
 }
 
 #chat-body{
-height:235px;
-overflow:auto;
-padding:10px;
-display:flex;
-flex-direction:column;
-gap:10px;
+ flex:1;
+ overflow:auto;
+ padding:16px;
+ display:flex;
+ flex-direction:column;
+ gap:12px;
 }
 
 .msg{
-padding:8px 12px;
-border-radius:12px;
-max-width:85%;
+ padding:12px 14px;
+ border-radius:16px;
+ max-width:85%;
 }
 
 .msg.ia{
-background:#063047;
-align-self:flex-start;
+ background:#0a2f45;
+ align-self:flex-start;
 }
 
-.msg.yo{
-background:#00d4ff33;
-align-self:flex-end;
+.msg.user{
+ background:#00d4ff33;
+ align-self:flex-end;
 }
 
 #chat-input{
-display:flex;
-padding:10px;
-gap:8px;
+ display:flex;
+ gap:10px;
+ padding:14px;
 }
 
 #chat-input input{
-flex:1;
-background:#011018;
-border:1px solid #00d4ff44;
-border-radius:10px;
-color:white;
-padding:8px;
+ flex:1;
+ padding:14px;
+ border-radius:14px;
+ border:1px solid #00d4ff44;
+ background:#021018;
+ color:white;
+ font-size:16px;
 }
 
 #chat-input button{
-padding:8px 12px;
-border:none;
-border-radius:10px;
-background:#00d4ff;
+ width:52px;
+ border:none;
+ border-radius:14px;
+ background:#00d4ff;
+ font-size:20px;
 }
