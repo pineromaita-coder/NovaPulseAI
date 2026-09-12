@@ -1,27 +1,31 @@
-async function cargar(){
+// MAITA NOVA IA V1 - Mercado
 
-const pares=["BTCUSDT","ETHUSDT","BNBUSDT"];
-const ids=["btc","eth","bnb"];
+async function actualizarMercado() {
+  try {
+    const symbols = ["BTCUSDT", "ETHUSDT", "BNBUSDT"];
 
-for(let i=0;i<pares.length;i++){
+    const respuestas = await Promise.all(
+      symbols.map(s =>
+        fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${s}`)
+          .then(r => r.json())
+      )
+    );
 
-try{
+    document.getElementById("btc").textContent =
+      "$" + Number(respuestas[0].price).toLocaleString();
 
-const r=await fetch(
-`https://api.binance.com/api/v3/ticker/price?symbol=${pares[i]}`
-);
+    document.getElementById("eth").textContent =
+      "$" + Number(respuestas[1].price).toLocaleString();
 
-const j=await r.json();
+    document.getElementById("bnb").textContent =
+      "$" + Number(respuestas[2].price).toLocaleString();
 
-document.getElementById(ids[i]).innerHTML=
-Number(j.price).toFixed(2);
-
-}catch{}
-
+  } catch (e) {
+    document.getElementById("btc").textContent = "Error";
+    document.getElementById("eth").textContent = "Error";
+    document.getElementById("bnb").textContent = "Error";
+  }
 }
 
-}
-
-cargar();
-
-setInterval(cargar,5000);
+actualizarMercado();
+setInterval(actualizarMercado, 15000);
