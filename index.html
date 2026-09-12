@@ -5,10 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>NovaPulse AI | JARVIS</title>
+  <title>Maita Nova IA</title>
 
   <meta name="theme-color" content="#00d4ff">
-  <meta name="description" content="NovaPulse AI - Sistema JARVIS">
+  <meta name="description" content="Maita Nova IA - MaitaCore">
 
   <!-- PWA -->
   <link rel="manifest" href="manifest.json">
@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="v3.css">
   <link rel="stylesheet" href="v4.css">
   <link rel="stylesheet" href="chat.css">
+  <link rel="stylesheet" href="dashboard.css">
 </head>
 
 <body>
@@ -28,9 +29,8 @@
   <!-- Interfaz principal -->
   <main class="hud">
 
-    <!-- Reactor central -->
+    <!-- Reactor -->
     <section class="reactor">
-
       <div class="radar"></div>
 
       <div class="ring ring1"></div>
@@ -40,46 +40,30 @@
       <div class="core">
         <div class="eye"></div>
       </div>
-
     </section>
 
-    <!-- Identidad -->
-    <h1>NovaPulse AI</h1>
-
-    <p>JARVIS ONLINE</p>
+    <!-- Marca -->
+    <h1>Maita Nova IA</h1>
+    <p>MaitaCore ONLINE</p>
 
     <!-- Reloj -->
     <div id="clock">00:00:00</div>
 
     <!-- Mercado -->
     <section class="prices">
-
-      <div>
-        ₿ BTC
-        <span id="btc">Cargando...</span>
-      </div>
-
-      <div>
-        ⟠ ETH
-        <span id="eth">Cargando...</span>
-      </div>
-
-      <div>
-        🔶 BNB
-        <span id="bnb">Cargando...</span>
-      </div>
-
+      <div>₿ BTC <span id="btc">...</span></div>
+      <div>⟠ ETH <span id="eth">...</span></div>
+      <div>🔶 BNB <span id="bnb">...</span></div>
     </section>
 
-    <!-- Botón IA -->
+    <!-- Botón principal -->
     <button onclick="iniciarIA()">
-      🚀 Iniciar IA
+      🚀 Activar MaitaCore
     </button>
 
   </main>
 
-  <!-- Módulos NovaPulse -->
-
+  <!-- Scripts -->
   <script src="market.js"></script>
   <script src="radar.js"></script>
   <script src="voice.js"></script>
@@ -89,6 +73,7 @@
   <script src="jarvis.js"></script>
   <script src="loader.js"></script>
   <script src="chat.js"></script>
+  <script src="dashboard.js"></script>
   <script src="app.js"></script>
 
   <!-- Service Worker -->
@@ -96,12 +81,8 @@
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
         navigator.serviceWorker.register("sw.js")
-          .then(() => {
-            console.log("🚀 NovaPulse Service Worker activo");
-          })
-          .catch((error) => {
-            console.log("Service Worker:", error);
-          });
+          .then(() => console.log("Maita Nova IA lista"))
+          .catch((error) => console.log(error));
       });
     }
   </script>
