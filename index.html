@@ -4,94 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NovaPulse AI</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-background:#02040a;
-overflow:hidden;
-font-family:Arial,sans-serif;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-}
-.grid{
-position:absolute;
-inset:0;
-background-image:
-linear-gradient(rgba(0,255,255,.08) 1px,transparent 1px),
-linear-gradient(90deg,rgba(0,255,255,.08) 1px,transparent 1px);
-background-size:40px 40px;
-animation:move 12s linear infinite;
-}
-@keyframes move{
-from{transform:translateY(0)}
-to{transform:translateY(40px)}
-}
-.core{
-width:180px;
-height:180px;
-border-radius:50%;
-background:radial-gradient(circle,#7de8ff,#00aaff,#001b33);
-box-shadow:0 0 80px #00d9ff;
-position:relative;
-animation:pulse 2s infinite;
-}
-.core::before,.core::after{
-content:"";
-position:absolute;
-inset:-25px;
-border:2px solid rgba(0,255,255,.5);
-border-radius:50%;
-animation:spin 8s linear infinite;
-}
-.core::after{
-inset:-45px;
-animation-direction:reverse;
-animation-duration:12s;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes pulse{
-50%{transform:scale(1.08)}
-}
-.panel{
-position:absolute;
-bottom:60px;
-text-align:center;
-}
-h1{
-font-size:34px;
-letter-spacing:2px;
-text-shadow:0 0 15px cyan;
-}
-p{
-margin:10px 0 20px;
-color:#8fdfff;
-}
-button{
-padding:14px 28px;
-border:none;
-border-radius:30px;
-background:#00cfff;
-color:black;
-font-weight:bold;
-font-size:16px;
-box-shadow:0 0 20px cyan;
-cursor:pointer;
-}
-button:hover{
-transform:scale(1.05);
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <div class="grid"></div>
 
-<div class="core"></div>
+<div style="display:flex;justify-content:center;align-items:center;height:100vh;">
+  <div class="arc-core"></div>
+</div>
 
-<div class="panel">
-<h1>NovaPulse AI</h1>
-<p>Sistema holográfico iniciado</p>
-<button onclick="alert('Bienvenido, Operador.')">In
+<div class="panel" style="position:fixed;bottom:50px;width:100%;text-align:center;">
+  <h1 style="color:#00d4ff;">NovaPulse AI</h1>
+  <p>Sistema JARVIS Online</p>
+  <button>Iniciar IA</button>
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
