@@ -1,7 +1,4 @@
-// =========================
-// MAITA NOVA IA - MaitaCore
-// Sprint 1
-// =========================
+// MAITA NOVA IA - App Core V1
 
 const mensajes = [
   "Inicializando MaitaCore...",
@@ -18,52 +15,45 @@ function esperar(ms){
 
 async function iniciarIA(){
 
-  const boton = document.querySelector("button");
+  const boton = document.getElementById("mainButton");
   const titulo = document.querySelector("h1");
+  const estado = document.querySelector("main p");
 
   boton.disabled = true;
   boton.innerText = "Iniciando...";
 
   for(const texto of mensajes){
-
-    titulo.innerText = texto;
-
-    if(window.logTerminal){
-      logTerminal(texto);
-    }
-
-    await esperar(800);
+    estado.innerText = texto;
+    await esperar(700);
   }
 
-  titulo.innerText = "MAITA NOVA IA";
-
+  titulo.innerText = "Maita Nova IA";
+  estado.innerText = "MaitaCore ACTIVO";
   boton.innerText = "Sistema Activo";
+  boton.disabled = false;
 
-  if("speechSynthesis" in window){
+  // Voz (Android)
+  if ("speechSynthesis" in window) {
+    speechSynthesis.cancel();
 
     const voz = new SpeechSynthesisUtterance(
-      "Operador autorizado. MaitaCore activo. El futuro responde."
+      "Operador David autorizado. MaitaCore activo. El futuro responde."
     );
 
     voz.lang = "es-ES";
-    voz.rate = 0.92;
+    voz.rate = 0.95;
+    voz.pitch = 0.9;
 
-    speechSynthesis.cancel();
     speechSynthesis.speak(voz);
   }
-
-  boton.disabled = false;
 }
 
+// Reloj
 function actualizarReloj(){
-
   const reloj = document.getElementById("clock");
-
   if(reloj){
-    reloj.innerText =
-      new Date().toLocaleTimeString("es-ES");
+    reloj.innerText = new Date().toLocaleTimeString("es-ES");
   }
-
 }
 
 setInterval(actualizarReloj,1000);
