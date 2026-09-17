@@ -37,133 +37,154 @@ h1{color:#8fdfff;text-shadow:0 0 15px #00d4ff;margin:10px 0}
 @keyframes spinR{to{transform:translate(-50%,-50%) rotate(-360deg)}}
 </style>
 </head>
+
 <body>
 
 <main class="app">
-<div class="reactor">
-<div class="ring1"></div>
-<div class="ring2"></div>
-<div class="core"></div>
-</div>
+  <div class="reactor">
+    <div class="ring1"></div>
+    <div class="ring2"></div>
+    <div class="core"></div>
+  </div>
 
-<h1>Maita Nova IA</h1>
-<p id="estado">MaitaCore ONLINE</p>
+  <h1>Maita Nova IA</h1>
+  <p id="estado">MaitaCore ONLINE</p>
 
-<div id="clock">00:00:00</div>
+  <div id="clock">00:00:00</div>
 
-<div class="prices">
-<div class="card"><span>₿ BTC</span><strong id="btc">...</strong></div>
-<div class="card"><span>⟠ ETH</span><strong id="eth">...</strong></div>
-<div class="card"><span>🔶 BNB</span><strong id="bnb">...</strong></div>
-</div>
+  <div class="prices">
+    <div class="card"><span>₿ BTC</span><strong id="btc">...</strong></div>
+    <div class="card"><span>⟠ ETH</span><strong id="eth">...</strong></div>
+    <div class="card"><span>🔶 BNB</span><strong id="bnb">...</strong></div>
+  </div>
 
-<button id="mainButton">🚀 Activar MaitaCore</button>
+  <button id="mainButton">🚀 Activar MaitaCore</button>
 </main>
 
 <nav class="bottom-nav">
-<button class="nav-btn">🏠<span>Inicio</span></button>
-<button class="nav-btn" id="openChat">💬<span>Chat</span></button>
-<button class="nav-btn">📈<span>Mercado</span></button>
-<button class="nav-btn">⚙️<span>Operador</span></button>
+  <button class="nav-btn">🏠<span>Inicio</span></button>
+  <button class="nav-btn" id="openChat">💬<span>Chat</span></button>
+  <button class="nav-btn">📈<span>Mercado</span></button>
+  <button class="nav-btn">⚙️<span>Operador</span></button>
 </nav>
 
 <div id="chat" class="chat">
-<div class="chat-top">
-<span>🤖 MaitaCore</span>
-<button id="closeChat">✕</button>
-</div>
+  <div class="chat-top">
+    <span>🤖 MaitaCore</span>
+    <button id="closeChat">✕</button>
+  </div>
 
-<div id="msgs" class="chat-msgs">
-<div class="bot">Hola David. Soy MaitaCore.</div>
-</div>
+  <div id="msgs" class="chat-msgs">
+    <div class="bot">Hola David. Soy MaitaCore.</div>
+  </div>
 
-<div class="chat-send">
-<input id="txt" placeholder="Escribe aquí...">
-<button id="send">➤</button>
-</div>
+  <div class="chat-send">
+    <input id="txt" placeholder="Escribe aquí...">
+    <button id="send">➤</button>
+  </div>
 </div>
 
 <script>
+document.addEventListener("DOMContentLoaded",()=>{
+
+const clock=document.getElementById("clock");
+const estado=document.getElementById("estado");
+const mainButton=document.getElementById("mainButton");
+
+const btc=document.getElementById("btc");
+const eth=document.getElementById("eth");
+const bnb=document.getElementById("bnb");
+
+const chat=document.getElementById("chat");
+const openChat=document.getElementById("openChat");
+const closeChat=document.getElementById("closeChat");
+const msgs=document.getElementById("msgs");
+const txt=document.getElementById("txt");
+const send=document.getElementById("send");
+
 // Reloj
-function reloj(){
-document.getElementById("clock").textContent=new Date().toLocaleTimeString("es-ES");
+function actualizarReloj(){
+  clock.textContent=new Date().toLocaleTimeString("es-ES");
 }
-reloj();
-setInterval(reloj,1000);
+actualizarReloj();
+setInterval(actualizarReloj,1000);
 
 // Mercado
 async function mercado(){
-try{
-const r=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin&vs_currencies=usd");
-const d=await r.json();
-btc.textContent="$"+d.bitcoin.usd.toLocaleString();
-eth.textContent="$"+d.ethereum.usd.toLocaleString();
-bnb.textContent="$"+d.binancecoin.usd.toLocaleString();
-}catch(e){
-btc.textContent="Error";
-eth.textContent="Error";
-bnb.textContent="Error";
-}
+  try{
+    const r=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin&vs_currencies=usd");
+    const d=await r.json();
+    btc.textContent="$"+d.bitcoin.usd.toLocaleString();
+    eth.textContent="$"+d.ethereum.usd.toLocaleString();
+    bnb.textContent="$"+d.binancecoin.usd.toLocaleString();
+  }catch(e){
+    btc.textContent="Error";
+    eth.textContent="Error";
+    bnb.textContent="Error";
+  }
 }
 mercado();
 setInterval(mercado,30000);
 
 // Botón principal
-document.getElementById("mainButton").onclick=async()=>{
-const b=mainButton;
-b.disabled=true;
-const e=estado;
-const pasos=[
-"Inicializando MaitaCore...",
-"Escaneando sistema...",
-"Conectando mercado...",
-"Operador autorizado.",
-"MaitaCore ACTIVO"
-];
-for(const p of pasos){
-e.textContent=p;
-await new Promise(r=>setTimeout(r,700));
-}
-b.textContent="✅ Sistema Activo";
-b.disabled=false;
-if("speechSynthesis" in window){
-speechSynthesis.cancel();
-const s=new SpeechSynthesisUtterance("Operador David autorizado. MaitaCore activo.");
-s.lang="es-ES";
-speechSynthesis.speak(s);
-}
-};
+mainButton.addEventListener("click",async()=>{
+  mainButton.disabled=true;
+  const pasos=[
+    "Inicializando MaitaCore...",
+    "Escaneando sistema...",
+    "Conectando mercado...",
+    "Operador autorizado.",
+    "MaitaCore ACTIVO"
+  ];
+
+  for(const p of pasos){
+    estado.textContent=p;
+    await new Promise(r=>setTimeout(r,700));
+  }
+
+  mainButton.textContent="✅ Sistema Activo";
+  mainButton.disabled=false;
+
+  if("speechSynthesis" in window){
+    const s=new SpeechSynthesisUtterance("Operador David autorizado. MaitaCore activo.");
+    s.lang="es-ES";
+    speechSynthesis.speak(s);
+  }
+});
 
 // Chat
-openChat.onclick=()=>chat.classList.add("show");
-closeChat.onclick=()=>chat.classList.remove("show");
+openChat.addEventListener("click",()=>chat.classList.add("show"));
+closeChat.addEventListener("click",()=>chat.classList.remove("show"));
 
 function responder(){
-const t=txt.value.trim();
-if(!t)return;
+  const texto=txt.value.trim();
+  if(!texto) return;
 
-const u=document.createElement("div");
-u.className="user";
-u.textContent=t;
-msgs.appendChild(u);
-txt.value="";
+  const user=document.createElement("div");
+  user.className="user";
+  user.textContent=texto;
+  msgs.appendChild(user);
 
-setTimeout(()=>{
-const b=document.createElement("div");
-b.className="bot";
+  txt.value="";
 
-if(t.toLowerCase().includes("btc")) b.textContent="Bitcoin aparece en la pantalla principal.";
-else if(t.toLowerCase().includes("hora")) b.textContent=new Date().toLocaleTimeString("es-ES");
-else b.textContent="MaitaCore recibió tu mensaje.";
+  setTimeout(()=>{
+    const bot=document.createElement("div");
+    bot.className="bot";
 
-msgs.appendChild(b);
-msgs.scrollTop=msgs.scrollHeight;
-},500);
+    if(texto.toLowerCase().includes("btc")) bot.textContent="Bitcoin aparece en la pantalla principal.";
+    else if(texto.toLowerCase().includes("hora")) bot.textContent=new Date().toLocaleTimeString("es-ES");
+    else bot.textContent="MaitaCore recibió tu mensaje.";
+
+    msgs.appendChild(bot);
+    msgs.scrollTop=msgs.scrollHeight;
+  },500);
 }
 
-send.onclick=responder;
+send.addEventListener("click",responder);
 txt.addEventListener("keydown",e=>{
-if(e.key==="Enter")responder();
+  if(e.key==="Enter") responder();
+});
+
 });
 </script>
 
