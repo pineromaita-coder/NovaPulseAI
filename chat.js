@@ -1,92 +1,58 @@
-// MAITA NOVA IA - Sprint 6
+// MAITA NOVA IA V2.2 - Chat
 
-const btn = document.createElement("button");
-btn.id = "chat-btn";
-btn.innerHTML = "💬";
+const chatOpen = document.getElementById("chatOpen");
+const chatPanel = document.getElementById("chatPanel");
+const closeChat = document.getElementById("closeChat");
+const sendChat = document.getElementById("sendChat");
+const chatInput = document.getElementById("chatInput");
+const chatMessages = document.getElementById("chatMessages");
 
-const panel = document.createElement("div");
-panel.id = "chat-panel";
+if (chatOpen) chatOpen.onclick = () => chatPanel.classList.add("show");
+if (closeChat) closeChat.onclick = () => chatPanel.classList.remove("show");
 
-panel.innerHTML = `
-<div id="chat-header">
-  <span>🤖 Maita Nova IA</span>
-  <button id="close-chat">✕</button>
-</div>
+function mensaje(tipo, texto) {
+  const div = document.createElement("div");
+  div.className = tipo === "user" ? "user-msg" : "bot-msg";
+  div.textContent = texto;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
 
-<div id="chat-body">
-  <div class="msg ia">
-    Operador David. MaitaCore listo.
-  </div>
-</div>
+function responder(texto) {
+  mensaje("user", texto);
+  chatInput.value = "";
 
-<div id="chat-input">
-  <input id="textoIA"
-         placeholder="Escribe aquí...">
-  <button id="enviarIA">➤</button>
-</div>
-`;
+  setTimeout(() => {
+    const t = texto.toLowerCase();
 
-document.body.append(btn, panel);
+    if (t.includes("btc"))
+      mensaje("bot", "El precio de Bitcoin está en la pantalla principal.");
 
-const body = panel.querySelector("#chat-body");
-const input = panel.querySelector("#textoIA");
+    else if (t.includes("eth"))
+      mensaje("bot", "Ethereum aparece actualizado en la sección Mercado.");
 
-btn.onclick = () => panel.classList.add("open");
-panel.querySelector("#close-chat").onclick = () => panel.classList.remove("open");
+    else if (t.includes("bnb"))
+      mensaje("bot", "BNB también está disponible en la pantalla principal.");
 
-const respuestas = {
-  btc: "Consultando Bitcoin...",
-  eth: "Ethereum conectado.",
-  bnb: "BNB disponible.",
-  hola: "Hola David. ¿En qué trabajamos hoy?"
+    else if (t.includes("hora"))
+      mensaje("bot", new Date().toLocaleTimeString("es-ES"));
+
+    else if (t.includes("hola"))
+      mensaje("bot", "Hola David. MaitaCore listo.");
+
+    else
+      mensaje("bot", "Procesando solicitud...");
+  }, 500);
+}
+
+if (sendChat) sendChat.onclick = () => {
+  if (chatInput.value.trim()) responder(chatInput.value);
 };
 
-function escribirIA(texto){
-
-  const msg = document.createElement("div");
-  msg.className = "msg ia";
-  body.appendChild(msg);
-
-  let i = 0;
-
-  const efecto = setInterval(() => {
-
-    msg.textContent += texto[i];
-    i++;
-
-    body.scrollTop = body.scrollHeight;
-
-    if(i >= texto.length){
-      clearInterval(efecto);
+if (chatInput) {
+  chatInput.addEventListener("keydown", e => {
+    if (e.key === "Enter" && chatInput.value.trim()) {
+      responder(chatInput.value);
     }
-
-  },18);
-
+  });
 }
-
-function enviar(){
-
-  const texto = input.value.trim();
-
-  if(!texto) return;
-
-  body.innerHTML +=
-    `<div class="msg user">${texto}</div>`;
-
-  input.value = "";
-
-  const t = texto.toLowerCase();
-
-  let respuesta =
-    respuestas[t] ||
-    "MaitaCore está procesando tu solicitud.";
-
-  setTimeout(() => escribirIA(respuesta),400);
-
-}
-
-panel.querySelector("#enviarIA").onclick = enviar;
-
-input.addEventListener("keydown",e=>{
-  if(e.key==="Enter") enviar();
-});
