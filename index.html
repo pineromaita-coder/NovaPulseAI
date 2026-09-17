@@ -2,269 +2,169 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Maita Nova IA</title>
-
 <meta name="theme-color" content="#00d4ff">
-<meta name="description" content="Maita Nova IA - MaitaCore">
 
-<link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="style.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#020b15;color:#fff}
+.app{max-width:390px;margin:auto;min-height:100vh;padding:22px 18px 90px;display:flex;flex-direction:column;align-items:center}
+.reactor{position:relative;width:170px;height:170px;margin:15px 0}
+.ring1,.ring2,.core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:50%}
+.ring1{width:120px;height:120px;border:2px solid #00d4ff;animation:spin 5s linear infinite}
+.ring2{width:170px;height:170px;border:2px dashed rgba(0,212,255,.3);animation:spinR 8s linear infinite}
+.core{width:74px;height:74px;background:radial-gradient(circle,#9efcff,#00d4ff,#0055aa);box-shadow:0 0 35px #00d4ff}
+h1{color:#8fdfff;text-shadow:0 0 15px #00d4ff;margin:10px 0}
+#estado{color:#9fdfff;margin-bottom:16px}
+#clock{font-size:24px;font-weight:bold;margin-bottom:18px}
+.prices{width:100%;display:flex;flex-direction:column;gap:12px}
+.card{background:#081825;border:1px solid rgba(0,212,255,.25);border-radius:18px;padding:16px;display:flex;justify-content:space-between}
+#mainButton{width:100%;height:58px;margin-top:22px;border:none;border-radius:18px;background:linear-gradient(135deg,#00d4ff,#006eff);color:#fff;font-size:18px;font-weight:bold}
+.bottom-nav{position:fixed;left:0;right:0;bottom:0;height:72px;background:#07131d;border-top:1px solid rgba(0,212,255,.2);display:flex;justify-content:space-around;align-items:center}
+.nav-btn{background:none;border:none;color:#8fdfff;font-size:12px;display:flex;flex-direction:column;align-items:center}
+.chat{position:fixed;left:0;right:0;bottom:-100%;height:70vh;background:#07131d;border-radius:24px 24px 0 0;transition:.3s;display:flex;flex-direction:column}
+.chat.show{bottom:72px}
+.chat-top{padding:16px;display:flex;justify-content:space-between;border-bottom:1px solid rgba(0,212,255,.2)}
+.chat-msgs{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.bot,.user{padding:12px 16px;border-radius:18px;max-width:82%}
+.bot{background:#0f2233}
+.user{background:#00d4ff;color:#001018;align-self:flex-end}
+.chat-send{display:flex;padding:16px;gap:10px}
+.chat-send input{flex:1;padding:14px;border:none;border-radius:14px;background:#0f2233;color:#fff}
+.chat-send button{width:50px;border:none;border-radius:14px;background:#00d4ff}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes spinR{to{transform:translate(-50%,-50%) rotate(-360deg)}}
+</style>
 </head>
-
 <body>
 
 <main class="app">
+<div class="reactor">
+<div class="ring1"></div>
+<div class="ring2"></div>
+<div class="core"></div>
+</div>
 
-  <!-- Reactor -->
-  <section class="reactor">
-    <div class="ring ring1"></div>
-    <div class="ring ring2"></div>
-    <div class="core"></div>
-  </section>
+<h1>Maita Nova IA</h1>
+<p id="estado">MaitaCore ONLINE</p>
 
-  <!-- Marca -->
-  <h1>Maita Nova IA</h1>
-  <p id="estado">MaitaCore ONLINE</p>
+<div id="clock">00:00:00</div>
 
-  <!-- Reloj -->
-  <div id="clock">00:00:00</div>
+<div class="prices">
+<div class="card"><span>₿ BTC</span><strong id="btc">...</strong></div>
+<div class="card"><span>⟠ ETH</span><strong id="eth">...</strong></div>
+<div class="card"><span>🔶 BNB</span><strong id="bnb">...</strong></div>
+</div>
 
-  <!-- Mercado -->
-  <section class="prices">
-
-    <div class="card">
-      <span>₿ BTC</span>
-      <strong id="btc">Cargando...</strong>
-    </div>
-
-    <div class="card">
-      <span>⟠ ETH</span>
-      <strong id="eth">Cargando...</strong>
-    </div>
-
-    <div class="card">
-      <span>🔶 BNB</span>
-      <strong id="bnb">Cargando...</strong>
-    </div>
-
-  </section>
-
-  <!-- Botón principal -->
-  <button id="mainButton" onclick="iniciarIA()">
-    🚀 Activar MaitaCore
-  </button>
-
+<button id="mainButton">🚀 Activar MaitaCore</button>
 </main>
 
-<!-- Barra inferior -->
-
 <nav class="bottom-nav">
-
-  <button class="nav-btn active">
-    <span class="icon">🏠</span>
-    <span>Inicio</span>
-  </button>
-
-  <button class="nav-btn" id="chatOpen">
-    <span class="icon">💬</span>
-    <span>Chat</span>
-  </button>
-
-  <button class="nav-btn">
-    <span class="icon">📈</span>
-    <span>Mercado</span>
-  </button>
-
-  <button class="nav-btn" id="operatorOpen">
-    <span class="icon">⚙️</span>
-    <span>Operador</span>
-  </button>
-
+<button class="nav-btn">🏠<span>Inicio</span></button>
+<button class="nav-btn" id="openChat">💬<span>Chat</span></button>
+<button class="nav-btn">📈<span>Mercado</span></button>
+<button class="nav-btn">⚙️<span>Operador</span></button>
 </nav>
 
-<!-- Panel Chat -->
-
-<div id="chatPanel" class="chat-panel">
-
-  <div class="chat-header">
-    <span>🤖 MaitaCore</span>
-    <button id="closeChat">✕</button>
-  </div>
-
-  <div id="chatMessages" class="chat-messages">
-
-    <div class="bot-msg">
-      Hola David. Soy MaitaCore. ¿En qué puedo ayudarte?
-    </div>
-
-  </div>
-
-  <div class="chat-input">
-    <input id="chatInput" type="text" placeholder="Escribe aquí...">
-    <button id="sendChat">➤</button>
-  </div>
-
+<div id="chat" class="chat">
+<div class="chat-top">
+<span>🤖 MaitaCore</span>
+<button id="closeChat">✕</button>
 </div>
 
-<!-- LOADER CINEMÁTICO INTEGRADO -->
+<div id="msgs" class="chat-msgs">
+<div class="bot">Hola David. Soy MaitaCore.</div>
+</div>
+
+<div class="chat-send">
+<input id="txt" placeholder="Escribe aquí...">
+<button id="send">➤</button>
+</div>
+</div>
 
 <script>
-const loader=document.createElement("div");
-loader.id="maitaLoader";
+// Reloj
+function reloj(){
+document.getElementById("clock").textContent=new Date().toLocaleTimeString("es-ES");
+}
+reloj();
+setInterval(reloj,1000);
 
-loader.innerHTML=`
-<div class="loader-box">
+// Mercado
+async function mercado(){
+try{
+const r=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin&vs_currencies=usd");
+const d=await r.json();
+btc.textContent="$"+d.bitcoin.usd.toLocaleString();
+eth.textContent="$"+d.ethereum.usd.toLocaleString();
+bnb.textContent="$"+d.binancecoin.usd.toLocaleString();
+}catch(e){
+btc.textContent="Error";
+eth.textContent="Error";
+bnb.textContent="Error";
+}
+}
+mercado();
+setInterval(mercado,30000);
 
-<div class="loader-reactor">
-<div class="lr1"></div>
-<div class="lr2"></div>
-<div class="lcore"></div>
-</div>
-
-<h2>MAITA NOVA IA</h2>
-
-<p id="loaderText">Inicializando MaitaCore...</p>
-
-<div class="progress">
-<div class="fill"></div>
-</div>
-
-</div>
-`;
-
-document.body.appendChild(loader);
-
+// Botón principal
+document.getElementById("mainButton").onclick=async()=>{
+const b=mainButton;
+b.disabled=true;
+const e=estado;
 const pasos=[
 "Inicializando MaitaCore...",
 "Escaneando sistema...",
 "Conectando mercado...",
-"Operador autorizado."
+"Operador autorizado.",
+"MaitaCore ACTIVO"
 ];
+for(const p of pasos){
+e.textContent=p;
+await new Promise(r=>setTimeout(r,700));
+}
+b.textContent="✅ Sistema Activo";
+b.disabled=false;
+if("speechSynthesis" in window){
+speechSynthesis.cancel();
+const s=new SpeechSynthesisUtterance("Operador David autorizado. MaitaCore activo.");
+s.lang="es-ES";
+speechSynthesis.speak(s);
+}
+};
 
-let i=0;
+// Chat
+openChat.onclick=()=>chat.classList.add("show");
+closeChat.onclick=()=>chat.classList.remove("show");
 
-const txt=document.getElementById("loaderText");
+function responder(){
+const t=txt.value.trim();
+if(!t)return;
 
-const cambio=setInterval(()=>{
-i++;
-if(i<pasos.length) txt.textContent=pasos[i];
-},600);
+const u=document.createElement("div");
+u.className="user";
+u.textContent=t;
+msgs.appendChild(u);
+txt.value="";
 
 setTimeout(()=>{
-clearInterval(cambio);
-loader.classList.add("hide");
-setTimeout(()=>loader.remove(),500);
-},2500);
+const b=document.createElement("div");
+b.className="bot";
 
-const css=document.createElement("style");
+if(t.toLowerCase().includes("btc")) b.textContent="Bitcoin aparece en la pantalla principal.";
+else if(t.toLowerCase().includes("hora")) b.textContent=new Date().toLocaleTimeString("es-ES");
+else b.textContent="MaitaCore recibió tu mensaje.";
 
-css.textContent=`
-#maitaLoader{
-position:fixed;
-inset:0;
-background:radial-gradient(circle,#07131d,#01040a);
-display:flex;
-justify-content:center;
-align-items:center;
-z-index:9999;
-transition:.5s;
+msgs.appendChild(b);
+msgs.scrollTop=msgs.scrollHeight;
+},500);
 }
 
-#maitaLoader.hide{opacity:0;}
-
-.loader-box{
-width:90%;
-max-width:320px;
-text-align:center;
-}
-
-.loader-reactor{
-position:relative;
-width:150px;
-height:150px;
-margin:auto;
-}
-
-.lcore{
-position:absolute;
-left:50%;
-top:50%;
-transform:translate(-50%,-50%);
-width:70px;
-height:70px;
-border-radius:50%;
-background:radial-gradient(circle,#9efcff,#00d4ff,#004b9f);
-box-shadow:0 0 35px cyan;
-animation:pulse 2s infinite;
-}
-
-.lr1,.lr2{
-position:absolute;
-left:50%;
-top:50%;
-transform:translate(-50%,-50%);
-border-radius:50%;
-}
-
-.lr1{
-width:110px;
-height:110px;
-border:2px solid rgba(0,212,255,.5);
-animation:spin 4s linear infinite;
-}
-
-.lr2{
-width:150px;
-height:150px;
-border:2px dashed rgba(0,212,255,.25);
-animation:spinR 6s linear infinite;
-}
-
-.progress{
-margin-top:20px;
-height:8px;
-background:#0b2233;
-border-radius:8px;
-overflow:hidden;
-}
-
-.fill{
-height:100%;
-background:linear-gradient(90deg,#00d4ff,#74f7ff);
-animation:load 2.5s linear forwards;
-}
-
-@keyframes load{
-from{width:0;}
-to{width:100%;}
-}
-
-@keyframes spin{
-to{transform:translate(-50%,-50%) rotate(360deg);}
-}
-
-@keyframes spinR{
-to{transform:translate(-50%,-50%) rotate(-360deg);}
-}
-`;
-
-document.head.appendChild(css);
-</script>
-
-<!-- Scripts -->
-
-<script src="app.js"></script>
-<script src="market.js"></script>
-<script src="voice.js"></script>
-
-<!-- Service Worker -->
-
-<script>
-if("serviceWorker" in navigator){
-navigator.serviceWorker.register("sw.js").catch(()=>{});
-}
+send.onclick=responder;
+txt.addEventListener("keydown",e=>{
+if(e.key==="Enter")responder();
+});
 </script>
 
 </body>
