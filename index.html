@@ -83,10 +83,32 @@
 
 </nav>
 
+<!-- Panel Chat -->
+<div id="chatPanel" class="chat-panel">
+
+  <div class="chat-header">
+    <span>🤖 MaitaCore</span>
+    <button id="closeChat">✕</button>
+  </div>
+
+  <div id="chatMessages" class="chat-messages">
+    <div class="bot-msg">
+      Hola David. Soy MaitaCore. ¿En qué puedo ayudarte?
+    </div>
+  </div>
+
+  <div class="chat-input">
+    <input id="chatInput" type="text" placeholder="Escribe aquí...">
+    <button id="sendChat">➤</button>
+  </div>
+
+</div>
+
 <!-- Scripts -->
 <script src="app.js"></script>
 <script src="market.js"></script>
 <script src="voice.js"></script>
+<script src="chat.js"></script>
 
 <!-- Service Worker -->
 <script>
