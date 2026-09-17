@@ -1,23 +1,34 @@
-// MAITA NOVA IA - Mercado V2
+// MAITA NOVA IA - Mercado V3
 
 async function actualizarMercado() {
   try {
-    const r = await fetch(
-      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin&vs_currencies=usd"
+    const respuesta = await fetch(
+      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin&vs_currencies=usd",
+      { cache: "no-store" }
     );
 
-    const d = await r.json();
+    if (!respuesta.ok) throw new Error("API");
 
-    document.getElementById("btc").textContent = "$" + d.bitcoin.usd.toLocaleString();
-    document.getElementById("eth").textContent = "$" + d.ethereum.usd.toLocaleString();
-    document.getElementById("bnb").textContent = "$" + d.binancecoin.usd.toLocaleString();
+    const datos = await respuesta.json();
 
-  } catch {
+    document.getElementById("btc").textContent =
+      "$" + datos.bitcoin.usd.toLocaleString("en-US");
+
+    document.getElementById("eth").textContent =
+      "$" + datos.ethereum.usd.toLocaleString("en-US");
+
+    document.getElementById("bnb").textContent =
+      "$" + datos.binancecoin.usd.toLocaleString("en-US");
+
+  } catch (e) {
     document.getElementById("btc").textContent = "Sin conexión";
     document.getElementById("eth").textContent = "Sin conexión";
     document.getElementById("bnb").textContent = "Sin conexión";
+    console.log("Market:", e);
   }
 }
 
-actualizarMercado();
-setInterval(actualizarMercado, 30000);
+window.addEventListener("load", () => {
+  actualizarMercado();
+  setInterval(actualizarMercado, 30000);
+});
