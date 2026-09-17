@@ -1,0 +1,136 @@
+// MAITA NOVA IA - Operador V2.3
+
+const btnOperador = document.getElementById("operatorOpen");
+
+const panel = document.createElement("div");
+panel.id = "operatorPanel";
+
+panel.innerHTML = `
+<div class="op-box">
+
+  <button id="closeOperator">✕</button>
+
+  <div class="scan"></div>
+
+  <h2>MAITACORE</h2>
+
+  <p>Operador David autorizado</p>
+
+  <div class="status">
+    <div><span>Reactor</span><strong>100%</strong></div>
+    <div><span>Sistema</span><strong>ONLINE</strong></div>
+    <div><span>Mercado</span><strong>Conectado</strong></div>
+  </div>
+
+  <button class="launch">Abrir Panel</button>
+
+</div>
+`;
+
+document.body.appendChild(panel);
+
+btnOperador?.addEventListener("click", () => {
+  panel.classList.add("show");
+});
+
+document.getElementById("closeOperator").onclick = () => {
+  panel.classList.remove("show");
+};
+
+const css = document.createElement("style");
+
+css.textContent = `
+#operatorPanel{
+position:fixed;
+inset:0;
+background:rgba(0,8,18,.95);
+backdrop-filter:blur(10px);
+display:flex;
+justify-content:center;
+align-items:center;
+opacity:0;
+pointer-events:none;
+transition:.3s;
+z-index:3000;
+}
+
+#operatorPanel.show{
+opacity:1;
+pointer-events:auto;
+}
+
+.op-box{
+width:90%;
+max-width:340px;
+background:#07131d;
+border:1px solid rgba(0,212,255,.3);
+border-radius:24px;
+padding:24px;
+text-align:center;
+position:relative;
+}
+
+#closeOperator{
+position:absolute;
+right:16px;
+top:16px;
+background:none;
+border:none;
+color:white;
+font-size:22px;
+}
+
+.scan{
+width:140px;
+height:140px;
+margin:0 auto 18px;
+border-radius:50%;
+border:2px solid #00d4ff;
+box-shadow:0 0 30px #00d4ff;
+position:relative;
+overflow:hidden;
+}
+
+.scan::after{
+content:"";
+position:absolute;
+left:0;
+right:0;
+height:3px;
+background:#00d4ff;
+box-shadow:0 0 20px #00d4ff;
+animation:scan 2s linear infinite;
+}
+
+.status{
+display:flex;
+flex-direction:column;
+gap:12px;
+margin:22px 0;
+}
+
+.status div{
+display:flex;
+justify-content:space-between;
+padding:12px;
+border-radius:12px;
+background:#0f2233;
+}
+
+.launch{
+width:100%;
+padding:15px;
+border:none;
+border-radius:16px;
+background:linear-gradient(135deg,#00d4ff,#006eff);
+color:white;
+font-weight:bold;
+}
+
+@keyframes scan{
+0%{top:0;}
+100%{top:100%;}
+}
+`;
+
+document.head.appendChild(css);
