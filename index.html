@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Maita Nova IA</title>
 
 <meta name="theme-color" content="#00d4ff">
@@ -16,97 +17,251 @@
 
 <main class="app">
 
-<section class="reactor">
-<div class="ring ring1"></div>
-<div class="ring ring2"></div>
-<div class="core"></div>
-</section>
+  <!-- Reactor -->
+  <section class="reactor">
+    <div class="ring ring1"></div>
+    <div class="ring ring2"></div>
+    <div class="core"></div>
+  </section>
 
-<h1>Maita Nova IA</h1>
-<p id="estado">MaitaCore ONLINE</p>
+  <!-- Marca -->
+  <h1>Maita Nova IA</h1>
+  <p id="estado">MaitaCore ONLINE</p>
 
-<div id="clock">00:00:00</div>
+  <!-- Reloj -->
+  <div id="clock">00:00:00</div>
 
-<section class="prices">
+  <!-- Mercado -->
+  <section class="prices">
 
-<div class="card">
-<span>₿ BTC</span>
-<strong id="btc">Cargando...</strong>
-</div>
+    <div class="card">
+      <span>₿ BTC</span>
+      <strong id="btc">Cargando...</strong>
+    </div>
 
-<div class="card">
-<span>⟠ ETH</span>
-<strong id="eth">Cargando...</strong>
-</div>
+    <div class="card">
+      <span>⟠ ETH</span>
+      <strong id="eth">Cargando...</strong>
+    </div>
 
-<div class="card">
-<span>🔶 BNB</span>
-<strong id="bnb">Cargando...</strong>
-</div>
+    <div class="card">
+      <span>🔶 BNB</span>
+      <strong id="bnb">Cargando...</strong>
+    </div>
 
-</section>
+  </section>
 
-<button id="mainButton" onclick="iniciarIA()">
-🚀 Activar MaitaCore
-</button>
+  <!-- Botón principal -->
+  <button id="mainButton" onclick="iniciarIA()">
+    🚀 Activar MaitaCore
+  </button>
 
 </main>
 
+<!-- Barra inferior -->
+
 <nav class="bottom-nav">
 
-<button class="nav-btn active">
-<span class="icon">🏠</span>
-Inicio
-</button>
+  <button class="nav-btn active">
+    <span class="icon">🏠</span>
+    <span>Inicio</span>
+  </button>
 
-<button class="nav-btn" id="chatOpen">
-<span class="icon">💬</span>
-Chat
-</button>
+  <button class="nav-btn" id="chatOpen">
+    <span class="icon">💬</span>
+    <span>Chat</span>
+  </button>
 
-<button class="nav-btn">
-<span class="icon">📈</span>
-Mercado
-</button>
+  <button class="nav-btn">
+    <span class="icon">📈</span>
+    <span>Mercado</span>
+  </button>
 
-<button class="nav-btn" id="operatorOpen">
-<span class="icon">⚙️</span>
-Operador
-</button>
+  <button class="nav-btn" id="operatorOpen">
+    <span class="icon">⚙️</span>
+    <span>Operador</span>
+  </button>
 
 </nav>
 
+<!-- Panel Chat -->
+
 <div id="chatPanel" class="chat-panel">
 
-<div class="chat-header">
-🤖 MaitaCore
-<button id="closeChat">✕</button>
-</div>
+  <div class="chat-header">
+    <span>🤖 MaitaCore</span>
+    <button id="closeChat">✕</button>
+  </div>
 
-<div id="chatMessages" class="chat-messages">
+  <div id="chatMessages" class="chat-messages">
 
-<div class="bot-msg">
-Hola David. Soy MaitaCore.
-</div>
+    <div class="bot-msg">
+      Hola David. Soy MaitaCore. ¿En qué puedo ayudarte?
+    </div>
 
-</div>
+  </div>
 
-<div class="chat-input">
-
-<input id="chatInput"
-placeholder="Escribe aquí...">
-
-<button id="sendChat">➤</button>
+  <div class="chat-input">
+    <input id="chatInput" type="text" placeholder="Escribe aquí...">
+    <button id="sendChat">➤</button>
+  </div>
 
 </div>
 
+<!-- LOADER CINEMÁTICO INTEGRADO -->
+
+<script>
+const loader=document.createElement("div");
+loader.id="maitaLoader";
+
+loader.innerHTML=`
+<div class="loader-box">
+
+<div class="loader-reactor">
+<div class="lr1"></div>
+<div class="lr2"></div>
+<div class="lcore"></div>
 </div>
+
+<h2>MAITA NOVA IA</h2>
+
+<p id="loaderText">Inicializando MaitaCore...</p>
+
+<div class="progress">
+<div class="fill"></div>
+</div>
+
+</div>
+`;
+
+document.body.appendChild(loader);
+
+const pasos=[
+"Inicializando MaitaCore...",
+"Escaneando sistema...",
+"Conectando mercado...",
+"Operador autorizado."
+];
+
+let i=0;
+
+const txt=document.getElementById("loaderText");
+
+const cambio=setInterval(()=>{
+i++;
+if(i<pasos.length) txt.textContent=pasos[i];
+},600);
+
+setTimeout(()=>{
+clearInterval(cambio);
+loader.classList.add("hide");
+setTimeout(()=>loader.remove(),500);
+},2500);
+
+const css=document.createElement("style");
+
+css.textContent=`
+#maitaLoader{
+position:fixed;
+inset:0;
+background:radial-gradient(circle,#07131d,#01040a);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:9999;
+transition:.5s;
+}
+
+#maitaLoader.hide{opacity:0;}
+
+.loader-box{
+width:90%;
+max-width:320px;
+text-align:center;
+}
+
+.loader-reactor{
+position:relative;
+width:150px;
+height:150px;
+margin:auto;
+}
+
+.lcore{
+position:absolute;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+width:70px;
+height:70px;
+border-radius:50%;
+background:radial-gradient(circle,#9efcff,#00d4ff,#004b9f);
+box-shadow:0 0 35px cyan;
+animation:pulse 2s infinite;
+}
+
+.lr1,.lr2{
+position:absolute;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+border-radius:50%;
+}
+
+.lr1{
+width:110px;
+height:110px;
+border:2px solid rgba(0,212,255,.5);
+animation:spin 4s linear infinite;
+}
+
+.lr2{
+width:150px;
+height:150px;
+border:2px dashed rgba(0,212,255,.25);
+animation:spinR 6s linear infinite;
+}
+
+.progress{
+margin-top:20px;
+height:8px;
+background:#0b2233;
+border-radius:8px;
+overflow:hidden;
+}
+
+.fill{
+height:100%;
+background:linear-gradient(90deg,#00d4ff,#74f7ff);
+animation:load 2.5s linear forwards;
+}
+
+@keyframes load{
+from{width:0;}
+to{width:100%;}
+}
+
+@keyframes spin{
+to{transform:translate(-50%,-50%) rotate(360deg);}
+}
+
+@keyframes spinR{
+to{transform:translate(-50%,-50%) rotate(-360deg);}
+}
+`;
+
+document.head.appendChild(css);
+</script>
+
+<!-- Scripts -->
 
 <script src="app.js"></script>
 <script src="market.js"></script>
 <script src="voice.js"></script>
 <script src="chat.js"></script>
 <script src="operator.js"></script>
+
+<!-- Service Worker -->
 
 <script>
 if("serviceWorker" in navigator){
