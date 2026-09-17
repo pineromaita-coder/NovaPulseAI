@@ -1,192 +1,36 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Maita Nova IA</title>
-<meta name="theme-color" content="#00d4ff">
+async function responder(){
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{background:#020b15;color:#fff}
-.app{max-width:390px;margin:auto;min-height:100vh;padding:22px 18px 90px;display:flex;flex-direction:column;align-items:center}
-.reactor{position:relative;width:170px;height:170px;margin:15px 0}
-.ring1,.ring2,.core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:50%}
-.ring1{width:120px;height:120px;border:2px solid #00d4ff;animation:spin 5s linear infinite}
-.ring2{width:170px;height:170px;border:2px dashed rgba(0,212,255,.3);animation:spinR 8s linear infinite}
-.core{width:74px;height:74px;background:radial-gradient(circle,#9efcff,#00d4ff,#0055aa);box-shadow:0 0 35px #00d4ff}
-h1{color:#8fdfff;text-shadow:0 0 15px #00d4ff;margin:10px 0}
-#estado{color:#9fdfff;margin-bottom:16px}
-#clock{font-size:24px;font-weight:bold;margin-bottom:18px}
-.prices{width:100%;display:flex;flex-direction:column;gap:12px}
-.card{background:#081825;border:1px solid rgba(0,212,255,.25);border-radius:18px;padding:16px;display:flex;justify-content:space-between}
-#mainButton{width:100%;height:58px;margin-top:22px;border:none;border-radius:18px;background:linear-gradient(135deg,#00d4ff,#006eff);color:#fff;font-size:18px;font-weight:bold}
-.bottom-nav{position:fixed;left:0;right:0;bottom:0;height:72px;background:#07131d;border-top:1px solid rgba(0,212,255,.2);display:flex;justify-content:space-around;align-items:center}
-.nav-btn{background:none;border:none;color:#8fdfff;font-size:12px;display:flex;flex-direction:column;align-items:center}
-.chat{position:fixed;left:0;right:0;bottom:-100%;height:70vh;background:#07131d;border-radius:24px 24px 0 0;transition:.3s;display:flex;flex-direction:column}
-.chat.show{bottom:72px}
-.chat-top{padding:16px;display:flex;justify-content:space-between;border-bottom:1px solid rgba(0,212,255,.2)}
-.chat-msgs{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
-.bot,.user{padding:12px 16px;border-radius:18px;max-width:82%}
-.bot{background:#0f2233}
-.user{background:#00d4ff;color:#001018;align-self:flex-end}
-.chat-send{display:flex;padding:16px;gap:10px}
-.chat-send input{flex:1;padding:14px;border:none;border-radius:14px;background:#0f2233;color:#fff}
-.chat-send button{width:50px;border:none;border-radius:14px;background:#00d4ff}
-@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
-@keyframes spinR{to{transform:translate(-50%,-50%) rotate(-360deg)}}
-</style>
-</head>
+  const pregunta = txt.value.trim();
+  if(!pregunta) return;
 
-<body>
+  agregar("user", pregunta);
+  txt.value = "";
 
-<main class="app">
-  <div class="reactor">
-    <div class="ring1"></div>
-    <div class="ring2"></div>
-    <div class="core"></div>
-  </div>
+  agregar("bot","🌐 MaitaCore buscando en Internet...");
 
-  <h1>Maita Nova IA</h1>
-  <p id="estado">MaitaCore ONLINE</p>
-
-  <div id="clock">00:00:00</div>
-
-  <div class="prices">
-    <div class="card"><span>₿ BTC</span><strong id="btc">...</strong></div>
-    <div class="card"><span>⟠ ETH</span><strong id="eth">...</strong></div>
-    <div class="card"><span>🔶 BNB</span><strong id="bnb">...</strong></div>
-  </div>
-
-  <button id="mainButton">🚀 Activar MaitaCore</button>
-</main>
-
-<nav class="bottom-nav">
-  <button class="nav-btn">🏠<span>Inicio</span></button>
-  <button class="nav-btn" id="openChat">💬<span>Chat</span></button>
-  <button class="nav-btn">📈<span>Mercado</span></button>
-  <button class="nav-btn">⚙️<span>Operador</span></button>
-</nav>
-
-<div id="chat" class="chat">
-  <div class="chat-top">
-    <span>🤖 MaitaCore</span>
-    <button id="closeChat">✕</button>
-  </div>
-
-  <div id="msgs" class="chat-msgs">
-    <div class="bot">Hola David. Soy MaitaCore.</div>
-  </div>
-
-  <div class="chat-send">
-    <input id="txt" placeholder="Escribe aquí...">
-    <button id="send">➤</button>
-  </div>
-</div>
-
-<script>
-document.addEventListener("DOMContentLoaded",()=>{
-
-const clock=document.getElementById("clock");
-const estado=document.getElementById("estado");
-const mainButton=document.getElementById("mainButton");
-
-const btc=document.getElementById("btc");
-const eth=document.getElementById("eth");
-const bnb=document.getElementById("bnb");
-
-const chat=document.getElementById("chat");
-const openChat=document.getElementById("openChat");
-const closeChat=document.getElementById("closeChat");
-const msgs=document.getElementById("msgs");
-const txt=document.getElementById("txt");
-const send=document.getElementById("send");
-
-// Reloj
-function actualizarReloj(){
-  clock.textContent=new Date().toLocaleTimeString("es-ES");
-}
-actualizarReloj();
-setInterval(actualizarReloj,1000);
-
-// Mercado
-async function mercado(){
   try{
-    const r=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin&vs_currencies=usd");
-    const d=await r.json();
-    btc.textContent="$"+d.bitcoin.usd.toLocaleString();
-    eth.textContent="$"+d.ethereum.usd.toLocaleString();
-    bnb.textContent="$"+d.binancecoin.usd.toLocaleString();
+
+    const r = await fetch("https://nova-pulse-ai-1--pineromaita.replit.app/chat",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        message:pregunta
+      })
+    });
+
+    const data = await r.json();
+
+    msgs.lastChild.textContent = data.reply;
+
   }catch(e){
-    btc.textContent="Error";
-    eth.textContent="Error";
-    bnb.textContent="Error";
+
+    msgs.lastChild.textContent =
+    "No pude conectarme a Internet.";
+
+    console.log(e);
+
   }
+
 }
-mercado();
-setInterval(mercado,30000);
-
-// Botón principal
-mainButton.addEventListener("click",async()=>{
-  mainButton.disabled=true;
-  const pasos=[
-    "Inicializando MaitaCore...",
-    "Escaneando sistema...",
-    "Conectando mercado...",
-    "Operador autorizado.",
-    "MaitaCore ACTIVO"
-  ];
-
-  for(const p of pasos){
-    estado.textContent=p;
-    await new Promise(r=>setTimeout(r,700));
-  }
-
-  mainButton.textContent="✅ Sistema Activo";
-  mainButton.disabled=false;
-
-  if("speechSynthesis" in window){
-    const s=new SpeechSynthesisUtterance("Operador David autorizado. MaitaCore activo.");
-    s.lang="es-ES";
-    speechSynthesis.speak(s);
-  }
-});
-
-// Chat
-openChat.addEventListener("click",()=>chat.classList.add("show"));
-closeChat.addEventListener("click",()=>chat.classList.remove("show"));
-
-function responder(){
-  const texto=txt.value.trim();
-  if(!texto) return;
-
-  const user=document.createElement("div");
-  user.className="user";
-  user.textContent=texto;
-  msgs.appendChild(user);
-
-  txt.value="";
-
-  setTimeout(()=>{
-    const bot=document.createElement("div");
-    bot.className="bot";
-
-    if(texto.toLowerCase().includes("btc")) bot.textContent="Bitcoin aparece en la pantalla principal.";
-    else if(texto.toLowerCase().includes("hora")) bot.textContent=new Date().toLocaleTimeString("es-ES");
-    else bot.textContent="MaitaCore recibió tu mensaje.";
-
-    msgs.appendChild(bot);
-    msgs.scrollTop=msgs.scrollHeight;
-  },500);
-}
-
-send.addEventListener("click",responder);
-txt.addEventListener("keydown",e=>{
-  if(e.key==="Enter") responder();
-});
-
-});
-</script>
-
-</body>
-</html>
