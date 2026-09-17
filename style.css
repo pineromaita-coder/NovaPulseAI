@@ -1,11 +1,4 @@
-/* MAITA NOVA IA V2.2 */
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,Helvetica,sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
 
 body{
 background:#050b12;
@@ -15,16 +8,14 @@ overflow-x:hidden;
 
 .app{
 width:100%;
-max-width:380px;
+max-width:390px;
 min-height:100vh;
 margin:auto;
-padding:24px 18px 90px;
+padding:24px 18px 95px;
 display:flex;
 flex-direction:column;
 align-items:center;
 }
-
-/* ===== REACTOR ===== */
 
 .reactor{
 position:relative;
@@ -65,23 +56,17 @@ animation:spin 5s linear infinite;
 width:170px;
 height:170px;
 border:2px dashed rgba(0,212,255,.25);
-animation:spinReverse 7s linear infinite;
+animation:spinR 7s linear infinite;
 }
-
-/* ===== TEXTO ===== */
 
 h1{
 font-size:30px;
-text-align:center;
 color:#8fdfff;
-text-shadow:0 0 18px #00d4ff;
+text-shadow:0 0 18px cyan;
 margin-bottom:8px;
 }
 
-#estado{
-color:#9bdfff;
-margin-bottom:14px;
-}
+#estado{color:#9bdfff;margin-bottom:14px;}
 
 #clock{
 font-size:24px;
@@ -89,14 +74,12 @@ font-weight:bold;
 margin-bottom:22px;
 }
 
-/* ===== MERCADO ===== */
-
 .prices{
 width:100%;
 display:flex;
 flex-direction:column;
 gap:12px;
-margin-bottom:22px;
+margin-bottom:20px;
 }
 
 .card{
@@ -109,16 +92,6 @@ justify-content:space-between;
 align-items:center;
 }
 
-.card span{
-color:#9fdfff;
-}
-
-.card strong{
-font-size:18px;
-}
-
-/* ===== BOTÓN ===== */
-
 #mainButton{
 width:100%;
 height:58px;
@@ -129,17 +102,7 @@ color:white;
 font-size:18px;
 font-weight:bold;
 box-shadow:0 0 25px rgba(0,212,255,.45);
-margin-top:auto;
-margin-bottom:20px;
-transition:.2s;
 }
-
-#mainButton:active{
-transform:scale(.98);
-box-shadow:0 0 35px rgba(0,212,255,.7);
-}
-
-/* ===== BARRA INFERIOR ===== */
 
 .bottom-nav{
 position:fixed;
@@ -148,34 +111,24 @@ right:0;
 bottom:0;
 height:72px;
 background:#07131d;
-border-top:1px solid rgba(0,212,255,.25);
 display:flex;
 justify-content:space-around;
 align-items:center;
-z-index:999;
+border-top:1px solid rgba(0,212,255,.25);
 }
 
 .nav-btn{
 background:none;
 border:none;
 color:#8fdfff;
-font-size:12px;
 display:flex;
 flex-direction:column;
 align-items:center;
+font-size:12px;
 gap:4px;
 }
 
-.nav-btn .icon{
-font-size:22px;
-}
-
-.nav-btn.active{
-color:#00d4ff;
-text-shadow:0 0 10px #00d4ff;
-}
-
-/* ===== CHAT ===== */
+.nav-btn.active{color:#00d4ff;}
 
 .chat-panel{
 position:fixed;
@@ -184,26 +137,20 @@ right:0;
 bottom:-100%;
 height:75vh;
 background:#07131d;
-border-top-left-radius:24px;
-border-top-right-radius:24px;
-border-top:1px solid rgba(0,212,255,.25);
+border-radius:24px 24px 0 0;
 transition:.35s;
 display:flex;
 flex-direction:column;
 z-index:1000;
 }
 
-.chat-panel.show{
-bottom:72px;
-}
+.chat-panel.show{bottom:72px;}
 
 .chat-header{
 display:flex;
 justify-content:space-between;
-align-items:center;
 padding:18px;
 color:#8fdfff;
-font-weight:bold;
 border-bottom:1px solid rgba(0,212,255,.2);
 }
 
@@ -224,20 +171,15 @@ gap:12px;
 }
 
 .bot-msg,.user-msg{
-max-width:82%;
 padding:12px 16px;
 border-radius:18px;
-line-height:1.4;
+max-width:82%;
 }
 
-.bot-msg{
-background:#0f2233;
-align-self:flex-start;
-}
-
+.bot-msg{background:#0f2233;}
 .user-msg{
 background:#00d4ff;
-color:#021018;
+color:black;
 align-self:flex-end;
 }
 
@@ -245,8 +187,35 @@ align-self:flex-end;
 display:flex;
 gap:10px;
 padding:16px;
-border-top:1px solid rgba(0,212,255,.2);
 }
 
 .chat-input input{
-flex
+flex:1;
+padding:14px;
+border:none;
+border-radius:14px;
+background:#0f2233;
+color:white;
+}
+
+.chat-input button{
+width:52px;
+border:none;
+border-radius:14px;
+background:#00d4ff;
+}
+
+@keyframes spin{
+to{transform:translate(-50%,-50%) rotate(360deg);}
+}
+
+@keyframes spinR{
+to{transform:translate(-50%,-50%) rotate(-360deg);}
+}
+
+@keyframes pulse{
+50%{
+transform:translate(-50%,-50%) scale(1.08);
+box-shadow:0 0 55px cyan;
+}
+}
