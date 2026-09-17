@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Maita Nova IA</title>
 
 <meta name="theme-color" content="#00d4ff">
@@ -17,109 +16,101 @@
 
 <main class="app">
 
-  <!-- Reactor -->
-  <section class="reactor">
-    <div class="ring ring1"></div>
-    <div class="ring ring2"></div>
-    <div class="core"></div>
-  </section>
+<section class="reactor">
+<div class="ring ring1"></div>
+<div class="ring ring2"></div>
+<div class="core"></div>
+</section>
 
-  <!-- Marca -->
-  <h1>Maita Nova IA</h1>
-  <p id="estado">MaitaCore ONLINE</p>
+<h1>Maita Nova IA</h1>
+<p id="estado">MaitaCore ONLINE</p>
 
-  <!-- Reloj -->
-  <div id="clock">00:00:00</div>
+<div id="clock">00:00:00</div>
 
-  <!-- Mercado -->
-  <section class="prices">
+<section class="prices">
 
-    <div class="card">
-      <span>₿ BTC</span>
-      <strong id="btc">Cargando...</strong>
-    </div>
+<div class="card">
+<span>₿ BTC</span>
+<strong id="btc">Cargando...</strong>
+</div>
 
-    <div class="card">
-      <span>⟠ ETH</span>
-      <strong id="eth">Cargando...</strong>
-    </div>
+<div class="card">
+<span>⟠ ETH</span>
+<strong id="eth">Cargando...</strong>
+</div>
 
-    <div class="card">
-      <span>🔶 BNB</span>
-      <strong id="bnb">Cargando...</strong>
-    </div>
+<div class="card">
+<span>🔶 BNB</span>
+<strong id="bnb">Cargando...</strong>
+</div>
 
-  </section>
+</section>
 
-  <!-- Botón principal -->
-  <button id="mainButton" onclick="iniciarIA()">
-    🚀 Activar MaitaCore
-  </button>
+<button id="mainButton" onclick="iniciarIA()">
+🚀 Activar MaitaCore
+</button>
 
 </main>
 
-<!-- Barra inferior -->
 <nav class="bottom-nav">
 
-  <button class="nav-btn active">
-    <span class="icon">🏠</span>
-    <span>Inicio</span>
-  </button>
+<button class="nav-btn active">
+<span class="icon">🏠</span>
+Inicio
+</button>
 
-  <button class="nav-btn" id="chatOpen">
-    <span class="icon">💬</span>
-    <span>Chat</span>
-  </button>
+<button class="nav-btn" id="chatOpen">
+<span class="icon">💬</span>
+Chat
+</button>
 
-  <button class="nav-btn">
-    <span class="icon">📈</span>
-    <span>Mercado</span>
-  </button>
+<button class="nav-btn">
+<span class="icon">📈</span>
+Mercado
+</button>
 
-  <button class="nav-btn" id="operatorOpen">
-    <span class="icon">⚙️</span>
-    <span>Operador</span>
-  </button>
+<button class="nav-btn" id="operatorOpen">
+<span class="icon">⚙️</span>
+Operador
+</button>
 
 </nav>
 
-<!-- Panel Chat -->
 <div id="chatPanel" class="chat-panel">
 
-  <div class="chat-header">
-    <span>🤖 MaitaCore</span>
-    <button id="closeChat">✕</button>
-  </div>
+<div class="chat-header">
+🤖 MaitaCore
+<button id="closeChat">✕</button>
+</div>
 
-  <div id="chatMessages" class="chat-messages">
+<div id="chatMessages" class="chat-messages">
 
-    <div class="bot-msg">
-      Hola David. Soy MaitaCore. ¿En qué puedo ayudarte?
-    </div>
-
-  </div>
-
-  <div class="chat-input">
-    <input
-      id="chatInput"
-      type="text"
-      placeholder="Escribe aquí..."
-    >
-    <button id="sendChat">➤</button>
-  </div>
+<div class="bot-msg">
+Hola David. Soy MaitaCore.
+</div>
 
 </div>
 
-<!-- Scripts -->
+<div class="chat-input">
+
+<input id="chatInput"
+placeholder="Escribe aquí...">
+
+<button id="sendChat">➤</button>
+
+</div>
+
+</div>
+
 <script src="app.js"></script>
 <script src="market.js"></script>
 <script src="voice.js"></script>
 <script src="chat.js"></script>
+<script src="operator.js"></script>
 
-<!-- Service Worker -->
 <script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js").catch(() => {});
+if("serviceWorker" in navigator){
+navigator.serviceWorker.register("sw.js").catch(()=>{});
 }
 </script>
 
