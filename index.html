@@ -7,7 +7,7 @@
 <title>Maita Nova IA</title>
 
 <meta name="theme-color" content="#00d4ff">
-<meta name="description" content="Maita Nova IA">
+<meta name="description" content="Maita Nova IA - MaitaCore">
 
 <link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="style.css">
@@ -17,50 +17,81 @@
 
 <main class="app">
 
-  <div class="reactor">
+  <!-- Reactor -->
+  <section class="reactor">
     <div class="ring ring1"></div>
     <div class="ring ring2"></div>
     <div class="core"></div>
-  </div>
+  </section>
 
+  <!-- Marca -->
   <h1>Maita Nova IA</h1>
-
   <p id="estado">MaitaCore ONLINE</p>
 
+  <!-- Reloj -->
   <div id="clock">00:00:00</div>
 
-  <div class="prices">
+  <!-- Mercado -->
+  <section class="prices">
 
     <div class="card">
       <span>₿ BTC</span>
-      <strong id="btc">--</strong>
+      <strong id="btc">Cargando...</strong>
     </div>
 
     <div class="card">
       <span>⟠ ETH</span>
-      <strong id="eth">--</strong>
+      <strong id="eth">Cargando...</strong>
     </div>
 
     <div class="card">
       <span>🔶 BNB</span>
-      <strong id="bnb">--</strong>
+      <strong id="bnb">Cargando...</strong>
     </div>
 
-  </div>
+  </section>
 
-  <button id="mainButton">
+  <!-- Botón principal -->
+  <button id="mainButton" onclick="iniciarIA()">
     🚀 Activar MaitaCore
   </button>
 
 </main>
 
+<!-- Barra inferior -->
+<nav class="bottom-nav">
+
+  <button class="nav-btn active">
+    <span class="icon">🏠</span>
+    <span>Inicio</span>
+  </button>
+
+  <button class="nav-btn" id="chatOpen">
+    <span class="icon">💬</span>
+    <span>Chat</span>
+  </button>
+
+  <button class="nav-btn">
+    <span class="icon">📈</span>
+    <span>Mercado</span>
+  </button>
+
+  <button class="nav-btn">
+    <span class="icon">⚙️</span>
+    <span>Operador</span>
+  </button>
+
+</nav>
+
+<!-- Scripts -->
 <script src="app.js"></script>
 <script src="market.js"></script>
 <script src="voice.js"></script>
 
+<!-- Service Worker -->
 <script>
-if("serviceWorker" in navigator){
- navigator.serviceWorker.register("sw.js").catch(()=>{});
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js").catch(() => {});
 }
 </script>
 
