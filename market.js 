@@ -1,31 +1,23 @@
-// MAITA NOVA IA V1 - Mercado
+// MAITA NOVA IA - Mercado V2
 
 async function actualizarMercado() {
   try {
-    const symbols = ["BTCUSDT", "ETHUSDT", "BNBUSDT"];
-
-    const respuestas = await Promise.all(
-      symbols.map(s =>
-        fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${s}`)
-          .then(r => r.json())
-      )
+    const r = await fetch(
+      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin&vs_currencies=usd"
     );
 
-    document.getElementById("btc").textContent =
-      "$" + Number(respuestas[0].price).toLocaleString();
+    const d = await r.json();
 
-    document.getElementById("eth").textContent =
-      "$" + Number(respuestas[1].price).toLocaleString();
+    document.getElementById("btc").textContent = "$" + d.bitcoin.usd.toLocaleString();
+    document.getElementById("eth").textContent = "$" + d.ethereum.usd.toLocaleString();
+    document.getElementById("bnb").textContent = "$" + d.binancecoin.usd.toLocaleString();
 
-    document.getElementById("bnb").textContent =
-      "$" + Number(respuestas[2].price).toLocaleString();
-
-  } catch (e) {
-    document.getElementById("btc").textContent = "Error";
-    document.getElementById("eth").textContent = "Error";
-    document.getElementById("bnb").textContent = "Error";
+  } catch {
+    document.getElementById("btc").textContent = "Sin conexión";
+    document.getElementById("eth").textContent = "Sin conexión";
+    document.getElementById("bnb").textContent = "Sin conexión";
   }
 }
 
 actualizarMercado();
-setInterval(actualizarMercado, 15000);
+setInterval(actualizarMercado, 30000);
