@@ -26,7 +26,7 @@ window.hablar = function(texto) {
   try{
     speechSynthesis.cancel();
 
-    const mensaje = new SpeechSynthesisUtterance(texto);
+    const= mensaje =(VOICE) new SpeechSynthesisUtterance(texto);
 
     if(vozMaita) mensaje.voice = vozMaita;
 
