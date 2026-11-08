@@ -1,541 +1,517 @@
-<!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#050b12"><title>Maita Nova IA V9</title>
-<style>
-:root{--c:#00d4ff;--b:#006eff;--p:#0b1824}*{box-sizing:border-box;font-family:Arial,sans-serif}body{margin:0;background:radial-gradient(circle at top,#07131d,#01060c);color:white;min-height:100vh}button,input{font:inherit}.app{max-width:430px;min-height:100vh;margin:auto;padding:20px 18px 105px;display:flex;flex-direction:column;align-items:center}.page{display:none;width:100%}.page.active{display:flex;flex-direction:column;align-items:center}h1,h2,h3{color:#8fdfff}h1{font-size:30px;text-shadow:0 0 18px cyan;text-align:center}h2{font-size:23px}h3{font-size:17px;margin:0 0 8px}.sub,#estado{color:#9bdfff;text-align:center;font-size:13px;line-height:1.5}.reactor{position:relative;width:170px;height:170px;margin:10px 0 25px}.core,.ring{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:50%}.core{width:74px;height:74px;background:radial-gradient(circle,#9efcff,#00d4ff,#0055aa);box-shadow:0 0 35px #00d4ff;animation:pulse 2s infinite}.ring1{width:120px;height:120px;border:2px solid #00d4ff80;animation:spin 5s linear infinite}.ring2{width:170px;height:170px;border:2px dashed #00d4ff40;animation:spinr 7s linear infinite}.prices{width:100%;display:flex;flex-direction:column;gap:12px;margin:20px 0}.card,.panel{width:100%;background:var(--p);border:1px solid #00d4ff40;border-radius:18px;padding:15px 17px;margin-bottom:12px}.card{display:flex;justify-content:space-between;gap:8px;overflow-wrap:anywhere}.panel{display:flex;flex-direction:column;gap:12px}.primary,.secondary{width:100%;min-height:48px;border:0;border-radius:15px;padding:12px 16px;font-weight:bold;color:white;cursor:pointer}.primary{background:linear-gradient(135deg,var(--c),var(--b))}.secondary{background:#10283a;border:1px solid #00d4ff60;color:#a8eaff}button:disabled{opacity:.45}.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:76px;background:#07131d;display:flex;justify-content:space-around;align-items:center;border-top:1px solid #00d4ff40;z-index:10}.nav-btn{background:none;border:0;color:#8fdfff;display:flex;flex-direction:column;align-items:center;font-size:11px;gap:4px;min-width:52px}.nav-btn .emoji{font-size:20px}.nav-btn.active{color:var(--c)}.chat-panel{position:fixed;left:0;right:0;bottom:-100%;height:75vh;background:#07131d;border:1px solid #00d4ff40;border-radius:24px 24px 0 0;transition:.35s;display:flex;flex-direction:column;z-index:11;max-width:430px;margin:auto}.chat-panel.show{bottom:76px}.chat-header{display:flex;justify-content:space-between;padding:18px;color:#8fdfff}.chat-header button{background:none;border:0;color:white;font-size:22px}.chat-messages{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:12px}.bot-msg,.user-msg{padding:12px 16px;border-radius:18px;max-width:85%;overflow-wrap:anywhere}.bot-msg{background:#0f2233}.user-msg{background:var(--c);color:#001018;align-self:flex-end}.chat-input{display:flex;gap:10px;padding:16px}.chat-input input,.field{width:100%;padding:14px;border:1px solid #00d4ff40;border-radius:13px;background:#0f2233;color:white}.chat-input input{flex:1;min-width:0}.chat-input button{width:52px;border:0;border-radius:14px;background:var(--c)}.wallet-balance{font-size:30px;font-weight:bold;overflow-wrap:anywhere}.wallet-address,.status{font-size:12px;color:#a9c6d8;overflow-wrap:anywhere;line-height:1.5}.status.ok{color:#5ce6a0}.status.warn{color:#ffd27a}.status.error{color:#ff8b9b}.form-label{font-size:12px;color:#9bdfff}.note{font-size:12px;line-height:1.5;color:#9bb4c6;overflow-wrap:anywhere}.history-item{padding:10px;border:1px solid #00d4ff30;border-radius:12px;display:flex;flex-direction:column;gap:5px;overflow-wrap:anywhere}.history-item a{color:#8fdfff;font-size:12px}@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}@keyframes spinr{to{transform:translate(-50%,-50%) rotate(-360deg)}}@keyframes pulse{50%{transform:translate(-50%,-50%) scale(1.08);box-shadow:0 0 55px cyan}}
-</style></head><body>
-<main class="app">
-<section id="page-home" class="page active"><div class="reactor"><div class="ring ring1"></div><div class="ring ring2"></div><div class="core"></div></div><h1>Maita Nova IA</h1><p id="estado">MaitaCore ONLINE</p><div id="clock">00:00:00</div><div class="prices"><div class="card"><span>₿ BTC</span><strong id="btc">Cargando...</strong></div><div class="card"><span>⟠ ETH</span><strong id="eth">Cargando...</strong></div><div class="card"><span>🔶 BNB</span><strong id="bnb">Cargando...</strong></div></div><button id="mainButton" class="primary">🚀 Activar MaitaCore</button></section>
-<section id="page-market" class="page"><h2>📈 Mercado</h2><p class="sub">Cotizaciones de referencia en USD.</p><div class="prices"><div class="card"><span>₿ Bitcoin</span><strong id="btc2">—</strong></div><div class="card"><span>⟠ Ethereum</span><strong id="eth2">—</strong></div><div class="card"><span>🔶 BNB</span><strong id="bnb2">—</strong></div></div><button class="secondary" id="refreshMarket">Actualizar mercado</button></section>
-<section id="page-wallet" class="page"><h2>◈ MAITA WALLET</h2><p class="sub">Tu puerta al ecosistema Maita Nova IA.</p><div class="panel"><div class="status warn" id="networkStatus">Red requerida: BNB Smart Chain Testnet · Chain ID 97</div><button id="connectWallet" class="primary">🔗 Conectar MetaMask</button><div class="status" id="walletStatus">Billetera no conectada.</div></div><div class="panel"><div class="status">SALDO MAITA</div><div class="wallet-balance" id="maitaBalance">— MAITA</div><div class="wallet-address" id="walletAddress">Conecta tu billetera para consultar tu dirección.</div><button id="copyAddress" class="secondary" disabled>Copiar dirección</button><button id="refreshBalance" class="secondary" disabled>Actualizar saldo</button></div><div class="panel"><h3>Enviar MAITA (Testnet)</h3><label class="form-label" for="toAddress">Dirección del destinatario</label><input class="field" id="toAddress" placeholder="0x..." autocomplete="off"><label class="form-label" for="sendAmount">Cantidad de MAITA</label><input class="field" id="sendAmount" type="number" min="0" step="any" placeholder="Ej.: 10"><button id="sendMaita" class="primary" disabled>Enviar con MetaMask</button><div class="status warn" id="txStatus">Las transferencias requieren confirmación en MetaMask.</div></div><div class="panel"><h3>Información de red</h3><div class="status">BNB Smart Chain Testnet · Chain ID 97</div><div class="status" id="contractStatus">Contrato MAITA: configurado.</div><a href="https://testnet.bscscan.com/address/0x5269E2fDCC1C1fCac4535e735EB9fFF02c4E130E" target="_blank" rel="noopener noreferrer" class="secondary" style="text-decoration:none;text-align:center;padding:15px">Ver contrato MAITA</a><p class="note">Solo Testnet: los tokens no tienen valor monetario. Nunca introduzcas tu frase secreta ni clave privada en esta aplicación.</p></div></section>
-<section id="page-operator" class="page"><h2>⚙️ Operador</h2><p class="sub">Panel de control de MaitaCore</p><div class="panel"><div class="card"><span>Estado del sistema</span><strong id="operatorState">EN ESPERA</strong></div><div class="card"><span>Wallet</span><strong id="operatorWallet">Desconectada</strong></div><div class="card"><span>Red</span><strong>BNB Testnet</strong></div><div class="card"><span>Token</span><strong>MAITA</strong></div></div><button class="secondary" id="operatorChat">Abrir chat MaitaCore</button>
-<div class="panel"><h3>👑 Administración MAITA</h3><div class="status warn">Panel de consulta. No modifica el contrato ni mueve tokens.</div><div class="card"><span>Suministro total on-chain</span><strong id="adminSupply">—</strong></div><div class="card"><span>Saldo de wallet</span><strong id="adminBalance">—</strong></div><button id="refreshAdmin" class="primary" disabled>🔄 Actualizar administración</button></div>
-<div class="panel"><h3>📊 Tokenomics propuestos</h3><p class="note">Plan informativo sobre 21 millones. Estos tokens no están separados ni bloqueados en blockchain.</p><div class="card"><span>Comunidad · 35%</span><strong>7.350.000</strong></div><div class="card"><span>Tesorería y desarrollo · 20%</span><strong>4.200.000</strong></div><div class="card"><span>Liquidez · 15%</span><strong>3.150.000</strong></div><div class="card"><span>Investigación IA · 15%</span><strong>3.150.000</strong></div><div class="card"><span>Equipo · 10%</span><strong>2.100.000</strong></div><div class="card"><span>Alianzas · 5%</span><strong>1.050.000</strong></div></div>
-<div class="panel"><h3>📜 Historial de transferencias</h3><p class="note">Hasta 10 eventos de los últimos 5.000 bloques; puede no ser el historial completo.</p><div id="adminHistory" class="status">Conecta MetaMask y pulsa actualizar administración.</div></div></section></main>
-<nav class="bottom-nav"><button class="nav-btn active" data-page="home"><span class="emoji">🏠</span><span>Inicio</span></button><button class="nav-btn" id="openChat"><span class="emoji">💬</span><span>Chat</span></button><button class="nav-btn" data-page="market"><span class="emoji">📈</span><span>Mercado</span></button><button class="nav-btn" data-page="wallet"><span class="emoji">◈</span><span>Wallet</span></button><button class="nav-btn" data-page="operator"><span class="emoji">⚙️</span><span>Operador</span></button></nav>
-<div id="chat" class="chat-panel"><div class="chat-header"><span>🤖 MaitaCore</span><button id="closeChat">✕</button></div><div id="msgs" class="chat-messages"><div class="bot-msg">Hola. Soy MaitaCore. ¿En qué puedo ayudarte?</div></div><div class="chat-input"><input id="txt" placeholder="Escribe aquí..." autocomplete="off"><button id="send">➤</button></div></div>
-
-<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js"></script>
-<script>
-"use strict";
-const MAITA_TOKEN_ADDRESS="0x5269E2fDCC1C1fCac4535e735EB9fFF02c4E130E";
-const REQUIRED_CHAIN_ID=97n;
-const RPC_URL="https://data-seed-prebsc-1-s1.bnbchain.org:8545";
-const API="https://nova-pulse-ai-1--pineromaita.replit.app";
-const TOKEN_ABI=[
-"function balanceOf(address) view returns (uint256)",
-"function decimals() view returns (uint8)",
-"function symbol() view returns (string)",
-"function totalSupply() view returns (uint256)",
-"function transfer(address,uint256) returns (bool)",
-"event Transfer(address indexed from,address indexed to,uint256 value)"
-];
-const $=id=>document.getElementById(id);
-let provider=null,signer=null,userAddress=null,tokenContract=null;
-
-function setStatus(id,msg,type=""){
- const e=$(id);
- e.textContent=msg;
- e.className="status"+(type?" "+type:"");
-}
-function reloj(){
- $("clock").textContent=new Date().toLocaleTimeString("es-ES");
-}
-reloj();
-setInterval(reloj,1000);
-
-async function mercado(){
- let ids=["btc","eth","bnb","btc2","eth2","bnb2"];
- try{
-  let r=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin&vs_currencies=usd");
-  if(!r.ok)throw Error();
-  let d=await r.json();
-  $("btc").textContent=$("btc2").textContent="$"+d.bitcoin.usd.toLocaleString("en-US");
-  $("eth").textContent=$("eth2").textContent="$"+d.ethereum.usd.toLocaleString("en-US");
-  $("bnb").textContent=$("bnb2").textContent="$"+d.binancecoin.usd.toLocaleString("en-US");
- }catch(e){
-  ids.forEach(x=>$(x).textContent="No disponible");
- }
-}
-mercado();
-setInterval(mercado,60000);
-$("refreshMarket").onclick=mercado;
-
-$("mainButton").onclick=async()=>{
- let b=$("mainButton");
- b.disabled=true;
- b.textContent="Iniciando...";
- for(let p of ["Inicializando MaitaCore...","Escaneando sistema...","Conectando servicios...","Operador autorizado.","MaitaCore ACTIVO"]){
-  $("estado").textContent=p;
-  await new Promise(r=>setTimeout(r,600));
- }
- b.textContent="✅ Sistema Activo";
- b.disabled=false;
- $("operatorState").textContent="ACTIVO";
- if("speechSynthesis"in window){
-  let v=new SpeechSynthesisUtterance("Operador autorizado. MaitaCore activo.");
-  v.lang="es-ES";
-  speechSynthesis.cancel();
-  speechSynthesis.speak(v);
- }
-};
-
-function showPage(n){
- document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
- $("page-"+n).classList.add("active");
- document.querySelectorAll(".nav-btn[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===n));
- $("chat").classList.remove("show");
-}
-document.querySelectorAll(".nav-btn[data-page]").forEach(b=>b.onclick=()=>showPage(b.dataset.page));
-$("openChat").onclick=$("operatorChat").onclick=()=>$("chat").classList.add("show");
-$("closeChat").onclick=()=>$("chat").classList.remove("show");
-
-function agregar(t,s){
- let d=document.createElement("div");
- d.className=t;
- d.textContent=s;
- $("msgs").appendChild(d);
- $("msgs").scrollTop=$("msgs").scrollHeight;
-}
-async function responder(){
- let q=$("txt").value.trim();
- if(!q)return;
- agregar("user-msg",q);
- $("txt").value="";
- let l=document.createElement("div");
- l.className="bot-msg";
- l.textContent="Conectando con MaitaCore...";
- $("msgs").appendChild(l);
- try{
-  let r=await fetch(API+"/chat",{
-   method:"POST",
-   headers:{"Content-Type":"application/json"},
-   body:JSON.stringify({message:q})
-  });
-  if(!r.ok)throw Error();
-  let d=await r.json();
-  l.textContent=d.reply||"No recibí una respuesta válida.";
- }catch(e){
-  l.textContent="No pude conectarme al servidor MaitaCore. Verifica que el backend esté activo.";
- }
-}
-$("send").onclick=responder;
-$("txt").addEventListener("keydown",e=>{
- if(e.key==="Enter")responder();
-});async function ensureTestnet(){
- if(!window.ethereum)throw Error("Abre Maita Nova IA desde el navegador de MetaMask.");
- let c=await ethereum.request({method:"eth_chainId"});
- if(BigInt(c)!==REQUIRED_CHAIN_ID){
-  try{
-   await ethereum.request({method:"wallet_switchEthereumChain",params:[{chainId:"0x61"}]});
-  }catch(e){
-   if(e.code!==4902)throw e;
-   await ethereum.request({
-    method:"wallet_addEthereumChain",
-    params:[{
-     chainId:"0x61",
-     chainName:"BNB Smart Chain Testnet",
-     nativeCurrency:{name:"tBNB",symbol:"tBNB",decimals:18},
-     rpcUrls:[RPC_URL],
-     blockExplorerUrls:["https://testnet.bscscan.com/"]
-    }]
-   });
-  }
- }
- provider=new ethers.BrowserProvider(ethereum);
- if((await provider.getNetwork()).chainId!==REQUIRED_CHAIN_ID)
-  throw Error("Selecciona BNB Smart Chain Testnet, Chain ID 97.");
-}
-
-function crearContrato(){
- if(!ethers.isAddress(MAITA_TOKEN_ADDRESS))throw Error("Dirección del contrato no válida.");
- tokenContract=new ethers.Contract(MAITA_TOKEN_ADDRESS,TOKEN_ABI,provider);
-}
-
-async function refreshTokenBalance(){
- if(!userAddress||!provider)return;
- try{
-  $("maitaBalance").textContent="Consultando...";
-  crearContrato();
-  let [bal,dec,sym,supply]=await Promise.all([
-   tokenContract.balanceOf(userAddress),
-   tokenContract.decimals(),
-   tokenContract.symbol(),
-   tokenContract.totalSupply()
-  ]);
-  $("maitaBalance").textContent=Number(ethers.formatUnits(bal,dec)).toLocaleString("es-ES",{maximumFractionDigits:4})+" "+sym;
-  $("contractStatus").textContent="Contrato conectado: "+MAITA_TOKEN_ADDRESS;
-  setStatus("txStatus","Suministro total: "+Number(ethers.formatUnits(supply,dec)).toLocaleString("es-ES")+" "+sym,"ok");
-  $("sendMaita").disabled=$("refreshBalance").disabled=$("refreshAdmin").disabled=false;
- }catch(e){
-  console.error(e);
-  $("maitaBalance").textContent="No disponible";
-  $("sendMaita").disabled=true;
-  setStatus("txStatus","Error consultando contrato: "+(e.shortMessage||e.message),"error");
- }
-}
-
-async function refreshAdmin(){
- if(!userAddress||!provider){
-  setStatus("adminHistory","Conecta MetaMask primero.","warn");
-  return;
- }
- let b=$("refreshAdmin");
- b.disabled=true;
- b.textContent="Consultando...";
- try{
-  crearContrato();
-  let [supply,bal,dec,sym]=await Promise.all([
-   tokenContract.totalSupply(),
-   tokenContract.balanceOf(userAddress),
-   tokenContract.decimals(),
-   tokenContract.symbol()
-  ]);
-  $("adminSupply").textContent=Number(ethers.formatUnits(supply,dec)).toLocaleString("es-ES")+" "+sym;
-  $("adminBalance").textContent=Number(ethers.formatUnits(bal,dec)).toLocaleString("es-ES")+" "+sym;
-  setStatus("adminHistory","Consultando eventos...");
-  let latest=await provider.getBlockNumber();
-  let logs=await tokenContract.queryFilter(tokenContract.filters.Transfer(),Math.max(0,latest-5000),latest);
-  let box=$("adminHistory");
-  box.replaceChildren();
-  if(!logs.length){
-   setStatus("adminHistory","No se encontraron transferencias en los últimos 5.000 bloques.");
-   return;
-  }
-  logs.slice(-10).reverse().forEach(log=>{
-   let item=document.createElement("div");
-   item.className="history-item";
-   let amount=document.createElement("strong");
-   amount.textContent=Number(ethers.formatUnits(log.args.value,dec)).toLocaleString("es-ES")+" "+sym;
-   let parties=document.createElement("span");
-   parties.textContent="De: "+log.args.from+" | Para: "+log.args.to;
-   let link=document.createElement("a");
-   link.href="https://testnet.bscscan.com/tx/"+log.transactionHash;
-   link.target="_blank";
-   link.rel="noopener noreferrer";
-   link.textContent="Ver transacción en BscScan";
-   item.append(amount,parties,link);
-   box.appendChild(item);
-  });
-  let note=document.createElement("p");
-  note.className="note";
-  note.textContent="Hasta 10 eventos de los últimos 5.000 bloques; no necesariamente es el historial completo.";
-  box.appendChild(note);
- }catch(e){
-  console.error(e);
-  setStatus("adminHistory","No se pudo consultar: "+(e.shortMessage||e.message),"error");
- }finally{
-  b.disabled=false;
-  b.textContent="🔄 Actualizar administración";
- }
-}
-$("refreshAdmin").onclick=refreshAdmin;
-
-async function connectWallet(){
- try{
-  if(!window.ethereum)throw Error("Abre esta web desde el navegador de MetaMask.");
-  setStatus("walletStatus","Conectando...");
-  await ensureTestnet();
-  let a=await ethereum.request({method:"eth_requestAccounts"});
-  if(!a.length)throw Error("No se seleccionó una cuenta.");
-  userAddress=ethers.getAddress(a[0]);
-  signer=await provider.getSigner();
-  $("walletAddress").textContent=userAddress;
-  $("copyAddress").disabled=false;
-  $("operatorWallet").textContent="Conectada";
-  setStatus("walletStatus","MetaMask conectada correctamente.","ok");
-  setStatus("networkStatus","Conectado a BNB Smart Chain Testnet · Chain ID 97","ok");
-  await refreshTokenBalance();
- }catch(e){
-  console.error(e);
-  setStatus("walletStatus",e.shortMessage||e.message,"error");
- }
-}
-$("connectWallet").onclick=connectWallet;
-$("refreshBalance").onclick=refreshTokenBalance;
-
-$("copyAddress").onclick=async()=>{
- if(!userAddress)return;
- try{
-  await navigator.clipboard.writeText(userAddress);
-  setStatus("walletStatus","Dirección copiada.","ok");
- }catch(e){
-  setStatus("walletStatus","Mantén pulsada la dirección para copiarla.","warn");
- }
-};
-
-$("sendMaita").onclick=async()=>{
- try{
-  if(!userAddress||!signer||!tokenContract)throw Error("Conecta MetaMask primero.");
-  let to=$("toAddress").value.trim();
-  let amount=$("sendAmount").value.trim();
-  if(!ethers.isAddress(to))throw Error("Dirección destinataria no válida.");
-  if(!amount||!Number.isFinite(Number(amount))||Number(amount)<=0)
-   throw Error("Introduce una cantidad mayor que cero.");
-  let dec=await tokenContract.decimals();
-  let parsed=ethers.parseUnits(amount,dec);
-  let bal=await tokenContract.balanceOf(userAddress);
-  if(bal<parsed)throw Error("Saldo MAITA insuficiente.");
-  setStatus("txStatus","Confirma en MetaMask.","warn");
-  let tx=await tokenContract.connect(signer).transfer(ethers.getAddress(to),parsed);
-  setStatus("txStatus","Transacción enviada: "+tx.hash,"warn");
-  await tx.wait();
-  setStatus("txStatus","Transferencia confirmada: "+tx.hash,"ok");
-  $("toAddress").value=$("sendAmount").value="";
-  await refreshTokenBalance();
-  await refreshAdmin();
- }catch(e){
-  console.error(e);
-  setStatus("txStatus",e.shortMessage||e.reason||e.message,"error");
- }
-};
-
-if(window.ethereum){
- ethereum.on?.("accountsChanged",()=>{
-  userAddress=signer=tokenContract=null;
-  $("maitaBalance").textContent="— MAITA";
-  $("walletAddress").textContent="Vuelve a conectar tu billetera.";
-  $("sendMaita").disabled=$("refreshBalance").disabled=$("copyAddress").disabled=$("refreshAdmin").disabled=true;
-  $("adminSupply").textContent=$("adminBalance").textContent="—";
-  $("operatorWallet").textContent="Desconectada";
-  setStatus("walletStatus","Cuenta cambiada. Conecta otra vez.","warn");
-  setStatus("adminHistory","Conecta MetaMask y actualiza.","warn");
- });
- ethereum.on?.("chainChanged",()=>{
-  provider=signer=userAddress=tokenContract=null;
-  $("maitaBalance").textContent="— MAITA";
-  $("sendMaita").disabled=$("refreshBalance").disabled=$("refreshAdmin").disabled=true;
-  $("adminSupply").textContent=$("adminBalance").textContent="—";
-  setStatus("networkStatus","La red cambió. Vuelve a conectar MetaMask.","warn");
- });
-}
-console.log("MAITA NOVA IA V9 ACTIVO",MAITA_TOKEN_ADDRESS);
-</script>
-</body>
-</html><!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#080f16">
 <title>Maita Nova IA V10</title>
+
 <style>
-:root{--c:#c7d0da;--b:#71869b;--p:#101923;--silver:#e1e7ed;--silver2:#8999a9}
+:root{
+ --c:#c7d0da;
+ --b:#71869b;
+ --p:#101923;
+ --silver:#e1e7ed;
+}
 *{box-sizing:border-box;font-family:Arial,sans-serif}
-body{margin:0;background:radial-gradient(circle at top,#202b36,#05090e 65%);color:white;min-height:100vh}
+body{
+ margin:0;
+ min-height:100vh;
+ background:radial-gradient(circle at top,#202b36,#05090e 65%);
+ color:white;
+}
 button,input{font:inherit}
-.app{max-width:430px;min-height:100vh;margin:auto;padding:20px 18px 105px;display:flex;flex-direction:column;align-items:center}
+.app{
+ max-width:430px;
+ min-height:100vh;
+ margin:auto;
+ padding:20px 18px 105px;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+}
 .page{display:none;width:100%}
 .page.active{display:flex;flex-direction:column;align-items:center}
 h1,h2,h3{color:var(--silver)}
-h1{font-size:30px;text-shadow:0 0 18px #b9c6d5;text-align:center;letter-spacing:2px}
+h1{
+ font-size:30px;
+ text-shadow:0 0 18px #b9c6d5;
+ text-align:center;
+ letter-spacing:2px;
+}
 h2{font-size:23px}
 h3{font-size:17px;margin:0 0 8px}
-.sub,#estado{color:#aebdcb;text-align:center;font-size:13px;line-height:1.5}
-.brand-mark{width:88px;height:88px;margin:0 auto 12px;border-radius:24px;border:2px solid #cbd5df;background:linear-gradient(145deg,#f2f5f8,#697b8e 48%,#17222d 52%,#080e15);box-shadow:0 0 28px #b7c5d455,inset 0 0 18px #fff5;display:grid;place-items:center;transform:rotate(45deg)}
-.brand-mark span{transform:rotate(-45deg);font-size:58px;font-weight:900;font-style:italic;line-height:1;color:#101923;text-shadow:1px 1px 0 #fff,2px 3px 5px #000;letter-spacing:-8px;margin-left:-7px}
-.brand-caption{font-size:11px;letter-spacing:4px;color:#bfcbd7;margin-bottom:10px}
-.reactor{position:relative;width:170px;height:170px;margin:10px 0 25px}
-.core,.ring{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:50%}
-.core{width:74px;height:74px;background:radial-gradient(circle,#f2f5f8,#9eacbb,#263746);box-shadow:0 0 35px #b9c6d5;animation:pulse 2s infinite}
-.ring1{width:120px;height:120px;border:2px solid #cbd5df80;animation:spin 5s linear infinite}
-.ring2{width:170px;height:170px;border:2px dashed #aab8c666;animation:spinr 7s linear infinite}
-.prices{width:100%;display:flex;flex-direction:column;gap:12px;margin:20px 0}
-.card,.panel{width:100%;background:var(--p);border:1px solid #aab8c633;border-radius:18px;padding:15px 17px;margin-bottom:12px}
-.card{display:flex;justify-content:space-between;gap:8px;overflow-wrap:anywhere}
-.panel{display:flex;flex-direction:column;gap:12px}
-.primary,.secondary{width:100%;min-height:48px;border:0;border-radius:15px;padding:12px 16px;font-weight:bold;color:white;cursor:pointer}
-.primary{background:linear-gradient(135deg,#eef3f7,#7f91a4);color:#07111a;box-shadow:0 0 18px #aab8c633}
-.secondary{background:linear-gradient(135deg,#18232e,#0b141d);border:1px solid #8799ab80;color:#d4dde6}
-button:disabled{opacity:.45}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:76px;background:#080f16;display:flex;justify-content:space-around;align-items:center;border-top:1px solid #aab8c655;z-index:10}
-.nav-btn{background:none;border:0;color:#cbd5df;display:flex;flex-direction:column;align-items:center;font-size:11px;gap:4px;min-width:52px}
+.sub,#estado{
+ color:#aebdcb;
+ text-align:center;
+ font-size:13px;
+ line-height:1.5;
+}
+.brand-mark{
+ width:88px;
+ height:88px;
+ margin:0 auto 12px;
+ border-radius:24px;
+ border:2px solid #cbd5df;
+ background:linear-gradient(145deg,#f2f5f8,#697b8e 48%,#17222d 52%,#080e15);
+ box-shadow:0 0 28px #b7c5d455,inset 0 0 18px #fff5;
+ display:grid;
+ place-items:center;
+ transform:rotate(45deg);
+}
+.brand-mark span{
+ transform:rotate(-45deg);
+ font-size:58px;
+ font-weight:900;
+ font-style:italic;
+ color:#101923;
+ text-shadow:1px 1px 0 #fff,2px 3px 5px #000;
+}
+.brand-caption{
+ font-size:11px;
+ letter-spacing:4px;
+ color:#bfcbd7;
+ margin-bottom:10px;
+}
+.reactor{
+ position:relative;
+ width:170px;
+ height:170px;
+ margin:10px 0 25px;
+}
+.core,.ring{
+ position:absolute;
+ left:50%;
+ top:50%;
+ transform:translate(-50%,-50%);
+ border-radius:50%;
+}
+.core{
+ width:74px;
+ height:74px;
+ background:radial-gradient(circle,#f2f5f8,#9eacbb,#263746);
+ box-shadow:0 0 35px #b9c6d5;
+ animation:pulse 2s infinite;
+}
+.ring1{
+ width:120px;
+ height:120px;
+ border:2px solid #cbd5df80;
+ animation:spin 5s linear infinite;
+}
+.ring2{
+ width:170px;
+ height:170px;
+ border:2px dashed #aab8c666;
+ animation:spinr 7s linear infinite;
+}
+.prices{
+ width:100%;
+ display:flex;
+ flex-direction:column;
+ gap:12px;
+ margin:20px 0;
+}
+.card,.panel{
+ width:100%;
+ background:var(--p);
+ border:1px solid #aab8c655;
+ border-radius:18px;
+ padding:15px 17px;
+ margin-bottom:12px;
+}
+.card{
+ display:flex;
+ justify-content:space-between;
+ gap:8px;
+ overflow-wrap:anywhere;
+}
+.panel{
+ display:flex;
+ flex-direction:column;
+ gap:12px;
+}
+.primary,.secondary{
+ width:100%;
+ min-height:48px;
+ border:0;
+ border-radius:15px;
+ padding:12px 16px;
+ font-weight:bold;
+ cursor:pointer;
+}
+.primary{
+ background:linear-gradient(135deg,#eef3f7,#7f91a4);
+ color:#07111a;
+ box-shadow:0 0 18px #aab8c633;
+}
+.secondary{
+ background:linear-gradient(135deg,#18232e,#0b141d);
+ border:1px solid #8799ab80;
+ color:#d4dde6;
+}
+button:disabled{opacity:.45;cursor:not-allowed}
+.bottom-nav{
+ position:fixed;
+ bottom:0;
+ left:0;
+ right:0;
+ height:76px;
+ background:#080f16;
+ display:flex;
+ justify-content:space-around;
+ align-items:center;
+ border-top:1px solid #aab8c655;
+ z-index:100;
+}
+.nav-btn{
+ background:none;
+ border:0;
+ color:#cbd5df;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ font-size:11px;
+ gap:4px;
+ min-width:52px;
+ cursor:pointer;
+}
 .nav-btn .emoji{font-size:20px}
-.nav-btn.active{color:var(--c)}
-.chat-panel{position:fixed;left:0;right:0;bottom:-100%;height:75vh;background:#080f16;border:1px solid #aab8c633;border-radius:24px 24px 0 0;transition:.35s;display:flex;flex-direction:column;z-index:11;max-width:430px;margin:auto}
+.nav-btn.active{color:#fff}
+.chat-panel{
+ position:fixed;
+ left:0;
+ right:0;
+ bottom:-100%;
+ height:75vh;
+ background:#080f16;
+ border:1px solid #aab8c633;
+ border-radius:24px 24px 0 0;
+ transition:.35s;
+ display:flex;
+ flex-direction:column;
+ z-index:110;
+ max-width:430px;
+ margin:auto;
+}
 .chat-panel.show{bottom:76px}
-.chat-header{display:flex;justify-content:space-between;padding:18px;color:#cbd5df}
-.chat-header button{background:none;border:0;color:white;font-size:22px}
-.chat-messages{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
-.bot-msg,.user-msg{padding:12px 16px;border-radius:18px;max-width:85%;overflow-wrap:anywhere}
+.chat-header{
+ display:flex;
+ justify-content:space-between;
+ padding:18px;
+ color:#cbd5df;
+}
+.chat-header button{
+ background:none;
+ border:0;
+ color:white;
+ font-size:22px;
+}
+.chat-messages{
+ flex:1;
+ overflow:auto;
+ padding:16px;
+ display:flex;
+ flex-direction:column;
+ gap:12px;
+}
+.bot-msg,.user-msg{
+ padding:12px 16px;
+ border-radius:18px;
+ max-width:85%;
+ overflow-wrap:anywhere;
+}
 .bot-msg{background:#111d28}
-.user-msg{background:var(--c);color:#001018;align-self:flex-end}
-.chat-input{display:flex;gap:10px;padding:16px}
-.chat-input input,.field{width:100%;padding:14px;border:1px solid #aab8c655;border-radius:13px;background:#111d28;color:white}
+.user-msg{
+ background:var(--c);
+ color:#001018;
+ align-self:flex-end;
+}
+.chat-input{
+ display:flex;
+ gap:10px;
+ padding:16px;
+}
+.chat-input input,.field{
+ width:100%;
+ padding:14px;
+ border:1px solid #aab8c655;
+ border-radius:13px;
+ background:#111d28;
+ color:white;
+}
 .chat-input input{flex:1;min-width:0}
-.chat-input button{width:52px;border:0;border-radius:14px;background:var(--c)}
-.wallet-balance{font-size:30px;font-weight:bold;overflow-wrap:anywhere}
-.wallet-address,.status{font-size:12px;color:#a9c6d8;overflow-wrap:anywhere;line-height:1.5}
+.chat-input button{
+ width:52px;
+ border:0;
+ border-radius:14px;
+ background:var(--c);
+}
+.wallet-balance{
+ font-size:30px;
+ font-weight:bold;
+ overflow-wrap:anywhere;
+}
+.wallet-address,.status{
+ font-size:12px;
+ color:#a9c6d8;
+ overflow-wrap:anywhere;
+ line-height:1.5;
+}
 .status.ok{color:#5ce6a0}
 .status.warn{color:#ffd27a}
 .status.error{color:#ff8b9b}
 .form-label{font-size:12px;color:#b9c6d3}
-.note{font-size:12px;line-height:1.5;color:#9bb4c6;overflow-wrap:anywhere}
-.history-item{padding:10px;border:1px solid #aab8c644;border-radius:12px;display:flex;flex-direction:column;gap:5px;overflow-wrap:anywhere}
+.note{
+ font-size:12px;
+ line-height:1.5;
+ color:#9bb4c6;
+ overflow-wrap:anywhere;
+}
+.history-item{
+ padding:10px;
+ border:1px solid #aab8c644;
+ border-radius:12px;
+ display:flex;
+ flex-direction:column;
+ gap:5px;
+ overflow-wrap:anywhere;
+}
 .history-item a{color:#cbd5df;font-size:12px}
-@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
-@keyframes spinr{to{transform:translate(-50%,-50%) rotate(-360deg)}}
-@keyframes pulse{50%{transform:translate(-50%,-50%) scale(1.08);box-shadow:0 0 55px #cbd5df}}
+@keyframes spin{
+ to{transform:translate(-50%,-50%) rotate(360deg)}
+}
+@keyframes spinr{
+ to{transform:translate(-50%,-50%) rotate(-360deg)}
+}
+@keyframes pulse{
+ 50%{transform:translate(-50%,-50%) scale(1.08);box-shadow:0 0 55px #cbd5df}
+}
 </style>
 </head>
+
 <body>
 <main class="app">
+
+<!-- INICIO -->
 <section id="page-home" class="page active">
-<div class="brand-mark"><span>M</span></div>
-<div class="brand-caption">MAITA · NOVA IA</div>
-<div class="reactor"><div class="ring ring1"></div><div class="ring ring2"></div><div class="core"></div></div>
-<h1>MAITA NOVA IA</h1>
-<p id="estado">MaitaCore ONLINE</p>
-<div id="clock">00:00:00</div>
-<div class="prices">
-<div class="card"><span>₿ BTC</span><strong id="btc">Cargando...</strong></div>
-<div class="card"><span>⟠ ETH</span><strong id="eth">Cargando...</strong></div>
-<div class="card"><span>🔶 BNB</span><strong id="bnb">Cargando...</strong></div>
-</div>
-<button id="mainButton" class="primary">🚀 Activar MaitaCore</button>
+ <div class="brand-mark"><span>M</span></div>
+ <div class="brand-caption">MAITA · NOVA IA</div>
+ <div class="reactor">
+  <div class="ring ring1"></div>
+  <div class="ring ring2"></div>
+  <div class="core"></div>
+ </div>
+ <h1>MAITA NOVA IA</h1>
+ <p id="estado">MaitaCore ONLINE</p>
+ <div id="clock">00:00:00</div>
+ <div class="prices">
+  <div class="card"><span>₿ BTC</span><strong id="btc">Cargando...</strong></div>
+  <div class="card"><span>⟠ ETH</span><strong id="eth">Cargando...</strong></div>
+  <div class="card"><span>🔶 BNB</span><strong id="bnb">Cargando...</strong></div>
+ </div>
+ <button id="mainButton" class="primary">🚀 Activar MaitaCore</button>
 </section>
+
+<!-- MERCADO -->
 <section id="page-market" class="page">
-<h2>📈 Mercado</h2>
-<p class="sub">Cotizaciones de referencia en USD.</p>
-<div class="prices">
-<div class="card"><span>₿ Bitcoin</span><strong id="btc2">—</strong></div>
-<div class="card"><span>⟠ Ethereum</span><strong id="eth2">—</strong></div>
-<div class="card"><span>🔶 BNB</span><strong id="bnb2">—</strong></div>
-</div>
-<button class="secondary" id="refreshMarket">Actualizar mercado</button>
+ <h2>📈 Mercado</h2>
+ <p class="sub">Cotizaciones de referencia en USD.</p>
+ <div class="prices">
+  <div class="card"><span>₿ Bitcoin</span><strong id="btc2">—</strong></div>
+  <div class="card"><span>⟠ Ethereum</span><strong id="eth2">—</strong></div>
+  <div class="card"><span>🔶 BNB</span><strong id="bnb2">—</strong></div>
+ </div>
+ <button class="secondary" id="refreshMarket">Actualizar mercado</button>
 </section>
+
+<!-- WALLET -->
 <section id="page-wallet" class="page">
-<h2>◈ MAITA WALLET</h2>
-<p class="sub">Tu puerta al ecosistema Maita Nova IA.</p>
-<div class="panel">
-<div class="status warn" id="networkStatus">Red requerida: BNB Smart Chain Testnet · Chain ID 97</div>
-<button id="connectWallet" class="primary">🔗 Conectar MetaMask</button>
-<div class="status" id="walletStatus">Billetera no conectada.</div>
-</div>
-<div class="panel">
-<div class="status">SALDO MAITA</div>
-<div class="wallet-balance" id="maitaBalance">— MAITA</div>
-<div class="wallet-address" id="walletAddress">Conecta tu billetera para consultar tu dirección.</div>
-<button id="copyAddress" class="secondary" disabled>Copiar dirección</button>
-<button id="refreshBalance" class="secondary" disabled>Actualizar saldo</button>
-</div>
-<div class="panel">
-<h3>Enviar MAITA (Testnet)</h3>
-<label class="form-label" for="toAddress">Dirección del destinatario</label>
-<input class="field" id="toAddress" placeholder="0x..." autocomplete="off">
-<label class="form-label" for="sendAmount">Cantidad de MAITA</label>
-<input class="field" id="sendAmount" type="number" min="0" step="any" placeholder="Ej.: 10">
-<button id="sendMaita" class="primary" disabled>Enviar con MetaMask</button>
-<div class="status warn" id="txStatus">Las transferencias requieren confirmación en MetaMask.</div>
-</div>
-<div class="panel">
-<h3>Información de red</h3>
-<div class="status">BNB Smart Chain Testnet · Chain ID 97</div>
-<div class="status" id="contractStatus">Contrato MAITA: configurado.</div>
-<a href="https://testnet.bscscan.com/address/0x5269E2fDCC1C1fCac4535e735EB9fFF02c4E130E" target="_blank" rel="noopener noreferrer" class="secondary" style="text-decoration:none;text-align:center;padding:15px">Ver contrato MAITA</a>
-<p class="note">Solo Testnet: los tokens no tienen valor monetario. Nunca introduzcas tu frase secreta ni clave privada en esta aplicación.</p>
-</div>
+ <h2>◈ MAITA WALLET</h2>
+ <p class="sub">Tu puerta al ecosistema Maita Nova IA.</p>
+
+ <div class="panel">
+  <div class="status warn" id="networkStatus">
+   Red requerida: BNB Smart Chain Testnet · Chain ID 97
+  </div>
+  <button id="connectWallet" class="primary">🔗 Conectar MetaMask</button>
+  <div class="status" id="walletStatus">Billetera no conectada.</div>
+ </div>
+
+ <div class="panel">
+  <div class="status">SALDO MAITA</div>
+  <div class="wallet-balance" id="maitaBalance">— MAITA</div>
+  <div class="wallet-address" id="walletAddress">
+   Conecta tu billetera para consultar tu dirección.
+  </div>
+  <button id="copyAddress" class="secondary" disabled>Copiar dirección</button>
+  <button id="refreshBalance" class="secondary" disabled>Actualizar saldo</button>
+ </div>
+
+ <div class="panel">
+  <h3>Enviar MAITA (Testnet)</h3>
+  <label class="form-label" for="toAddress">Dirección del destinatario</label>
+  <input class="field" id="toAddress" placeholder="0x..." autocomplete="off">
+  <label class="form-label" for="sendAmount">Cantidad de MAITA</label>
+  <input class="field" id="sendAmount" type="number" min="0" step="any" placeholder="Ej.: 10">
+  <button id="sendMaita" class="primary" disabled>Enviar con MetaMask</button>
+  <div class="status warn" id="txStatus">
+   Las transferencias requieren confirmación en MetaMask.
+  </div>
+ </div>
+
+ <div class="panel">
+  <h3>Información de red</h3>
+  <div class="status">BNB Smart Chain Testnet · Chain ID 97</div>
+  <div class="status" id="contractStatus">Contrato MAITA: configurado.</div>
+  <a href="https://testnet.bscscan.com/address/0x5269E2fDCC1C1fCac4535e735EB9fFF02c4E130E"
+     target="_blank" rel="noopener noreferrer"
+     class="secondary" style="text-decoration:none;text-align:center;padding:15px">
+   Ver contrato MAITA
+  </a>
+  <p class="note">
+   Solo Testnet: los tokens no tienen valor monetario.
+   Nunca introduzcas tu frase secreta ni clave privada en esta aplicación.
+  </p>
+ </div>
 </section>
+
+<!-- OPERADOR -->
 <section id="page-operator" class="page">
-<h2>⚙️ Operador</h2>
-<p class="sub">Panel de control de MaitaCore</p>
-<div class="panel">
-<div class="card"><span>Estado del sistema</span><strong id="operatorState">EN ESPERA</strong></div>
-<div class="card"><span>Wallet</span><strong id="operatorWallet">Desconectada</strong></div>
-<div class="card"><span>Red</span><strong>BNB Testnet</strong></div>
-<div class="card"><span>Token</span><strong>MAITA</strong></div>
-</div>
-<button class="secondary" id="operatorChat">Abrir chat MaitaCore</button>
-<div class="panel">
-<h3>👑 Administración MAITA</h3>
-<div class="status warn">Panel de consulta. No modifica el contrato ni mueve tokens.</div>
-<div class="card"><span>Suministro total on-chain</span><strong id="adminSupply">—</strong></div>
-<div class="card"><span>Saldo de wallet</span><strong id="adminBalance">—</strong></div>
-<button id="refreshAdmin" class="primary" disabled>🔄 Actualizar administración</button>
-</div>
-<div class="panel">
-<h3>📊 Tokenomics propuestos</h3>
-<p class="note">Plan informativo sobre 21 millones. Estos tokens no están separados ni bloqueados en blockchain.</p>
-<div class="card"><span>Comunidad · 35%</span><strong>7.350.000</strong></div>
-<div class="card"><span>Tesorería y desarrollo · 20%</span><strong>4.200.000</strong></div>
-<div class="card"><span>Liquidez · 15%</span><strong>3.150.000</strong></div>
-<div class="card"><span>Investigación IA · 15%</span><strong>3.150.000</strong></div>
-<div class="card"><span>Equipo · 10%</span><strong>2.100.000</strong></div>
-<div class="card"><span>Alianzas · 5%</span><strong>1.050.000</strong></div>
-</div>
-<div class="panel">
-<h3>📜 Historial de transferencias</h3>
-<p class="note">Hasta 10 eventos de los últimos 5.000 bloques; puede no ser el historial completo.</p>
-<div id="adminHistory" class="status">Conecta MetaMask y pulsa actualizar administración.</div>
-</div>
-</section></main>
+ <h2>⚙️ Operador</h2>
+ <p class="sub">Panel de control de MaitaCore</p>
+
+ <div class="panel">
+  <div class="card"><span>Estado del sistema</span><strong id="operatorState">EN ESPERA</strong></div>
+  <div class="card"><span>Wallet</span><strong id="operatorWallet">Desconectada</strong></div>
+  <div class="card"><span>Red</span><strong>BNB Testnet</strong></div>
+  <div class="card"><span>Token</span><strong>MAITA</strong></div>
+ </div>
+
+ <button class="secondary" id="operatorChat">Abrir chat MaitaCore</button>
+
+ <div class="panel">
+  <h3>👑 Administración MAITA</h3>
+  <div class="status warn">Panel de consulta. No modifica el contrato ni mueve tokens.</div>
+  <div class="card"><span>Suministro total on-chain</span><strong id="adminSupply">—</strong></div>
+  <div class="card"><span>Saldo de wallet</span><strong id="adminBalance">—</strong></div>
+  <button id="refreshAdmin" class="primary" disabled>🔄 Actualizar administración</button>
+ </div>
+
+ <div class="panel">
+  <h3>📊 Tokenomics propuestos</h3>
+  <p class="note">Plan informativo sobre 21 millones. Estos tokens no están separados ni bloqueados en blockchain.</p>
+  <div class="card"><span>Comunidad · 35%</span><strong>7.350.000</strong></div>
+  <div class="card"><span>Tesorería y desarrollo · 20%</span><strong>4.200.000</strong></div>
+  <div class="card"><span>Liquidez · 15%</span><strong>3.150.000</strong></div>
+  <div class="card"><span>Investigación IA · 15%</span><strong>3.150.000</strong></div>
+  <div class="card"><span>Equipo · 10%</span><strong>2.100.000</strong></div>
+  <div class="card"><span>Alianzas · 5%</span><strong>1.050.000</strong></div>
+ </div>
+
+ <div class="panel">
+  <h3>📜 Historial de transferencias</h3>
+  <p class="note">Hasta 10 eventos de los últimos 5.000 bloques; puede no ser el historial completo.</p>
+  <div id="adminHistory" class="status">Conecta MetaMask y pulsa actualizar administración.</div>
+ </div>
+</section>
+
+</main>
+
+<!-- NAVEGACIÓN -->
 <nav class="bottom-nav">
-<button class="nav-btn active" data-page="home"><span class="emoji">🏠</span><span>Inicio</span></button>
-<button class="nav-btn" id="openChat"><span class="emoji">💬</span><span>Chat</span></button>
-<button class="nav-btn" data-page="market"><span class="emoji">📈</span><span>Mercado</span></button>
-<button class="nav-btn" data-page="wallet"><span class="emoji">◈</span><span>Wallet</span></button>
-<button class="nav-btn" data-page="operator"><span class="emoji">⚙️</span><span>Operador</span></button>
+ <button class="nav-btn active" data-page="home"><span class="emoji">🏠</span><span>Inicio</span></button>
+ <button class="nav-btn" id="openChat"><span class="emoji">💬</span><span>Chat</span></button>
+ <button class="nav-btn" data-page="market"><span class="emoji">📈</span><span>Mercado</span></button>
+ <button class="nav-btn" data-page="wallet"><span class="emoji">◈</span><span>Wallet</span></button>
+ <button class="nav-btn" data-page="operator"><span class="emoji">⚙️</span><span>Operador</span></button>
 </nav>
+
+<!-- CHAT -->
 <div id="chat" class="chat-panel">
-<div class="chat-header"><span>🤖 MaitaCore</span><button id="closeChat">✕</button></div>
-<div id="msgs" class="chat-messages"><div class="bot-msg">Hola. Soy MaitaCore. ¿En qué puedo ayudarte?</div></div>
-<div class="chat-input"><input id="txt" placeholder="Escribe aquí..." autocomplete="off"><button id="send">➤</button></div>
+ <div class="chat-header">
+  <span>🤖 MaitaCore</span>
+  <button id="closeChat">✕</button>
+ </div>
+ <div id="msgs" class="chat-messages">
+  <div class="bot-msg">Hola. Soy MaitaCore. ¿En qué puedo ayudarte?</div>
+ </div>
+ <div class="chat-input">
+  <input id="txt" placeholder="Escribe aquí..." autocomplete="off">
+  <button id="send">➤</button>
+ </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js"></script>
+
 <script>
 "use strict";
 
+/* CONFIGURACIÓN MAITA */
 const MAITA_TOKEN_ADDRESS="0x5269E2fDCC1C1fCac4535e735EB9fFF02c4E130E";
 const REQUIRED_CHAIN_ID=97n;
 const RPC_URL="https://data-seed-prebsc-1-s1.bnbchain.org:8545";
 const API="https://nova-pulse-ai-1--pineromaita.replit.app";
 
 const TOKEN_ABI=[
-"function balanceOf(address) view returns (uint256)",
-"function decimals() view returns (uint8)",
-"function symbol() view returns (string)",
-"function totalSupply() view returns (uint256)",
-"function transfer(address,uint256) returns (bool)",
-"event Transfer(address indexed from,address indexed to,uint256 value)"
+ "function balanceOf(address) view returns (uint256)",
+ "function decimals() view returns (uint8)",
+ "function symbol() view returns (string)",
+ "function totalSupply() view returns (uint256)",
+ "function transfer(address,uint256) returns (bool)",
+ "event Transfer(address indexed from,address indexed to,uint256 value)"
 ];
 
 const $=id=>document.getElementById(id);
-let provider=null,signer=null,userAddress=null,tokenContract=null;
 
+let provider=null;
+let signer=null;
+let userAddress=null;
+let tokenContract=null;
+
+/* ESTADOS */
 function setStatus(id,msg,type=""){
  const e=$(id);
+ if(!e)return;
  e.textContent=msg;
  e.className="status"+(type?" "+type:"");
 }
 
+/* RELOJ */
 function reloj(){
  $("clock").textContent=new Date().toLocaleTimeString("es-ES");
 }
 reloj();
 setInterval(reloj,1000);
 
+/* MERCADO */
 async function mercado(){
- let ids=["btc","eth","bnb","btc2","eth2","bnb2"];
+ const ids=["btc","eth","bnb","btc2","eth2","bnb2"];
  try{
-  let r=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin&vs_currencies=usd");
-  if(!r.ok)throw Error();
-  let d=await r.json();
+  const r=await fetch(
+   "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin&vs_currencies=usd"
+  );
+  if(!r.ok)throw new Error("Mercado no disponible");
+  const d=await r.json();
+
   $("btc").textContent=$("btc2").textContent="$"+d.bitcoin.usd.toLocaleString("en-US");
   $("eth").textContent=$("eth2").textContent="$"+d.ethereum.usd.toLocaleString("en-US");
   $("bnb").textContent=$("bnb2").textContent="$"+d.binancecoin.usd.toLocaleString("en-US");
  }catch(e){
-  ids.forEach(x=>$(x).textContent="No disponible");
+  ids.forEach(id=>$(id).textContent="No disponible");
  }
 }
 mercado();
 setInterval(mercado,60000);
-$("refreshMarket").onclick=mercado;
+$("refreshMarket").addEventListener("click",mercado);
 
-$("mainButton").onclick=async()=>{
- let b=$("mainButton");
+/* ACTIVAR MAITACORE */
+$("mainButton").addEventListener("click",async()=>{
+ const b=$("mainButton");
  b.disabled=true;
  b.textContent="Iniciando...";
- for(let p of [
+
+ for(const p of [
   "Inicializando MaitaCore...",
   "Escaneando sistema...",
   "Conectando servicios...",
@@ -543,72 +519,116 @@ $("mainButton").onclick=async()=>{
   "MaitaCore ACTIVO"
  ]){
   $("estado").textContent=p;
-  await new Promise(r=>setTimeout(r,600));
+  await new Promise(resolve=>setTimeout(resolve,600));
  }
+
  b.textContent="✅ Sistema Activo";
  b.disabled=false;
  $("operatorState").textContent="ACTIVO";
- if("speechSynthesis"in window){
-  let v=new SpeechSynthesisUtterance("Operador autorizado. MaitaCore activo.");
+
+ if("speechSynthesis" in window){
+  const v=new SpeechSynthesisUtterance("Operador autorizado. MaitaCore activo.");
   v.lang="es-ES";
   speechSynthesis.cancel();
   speechSynthesis.speak(v);
  }
-};
+});
 
-function showPage(n){
- document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
- $("page-"+n).classList.add("active");
- document.querySelectorAll(".nav-btn[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===n));
+/* NAVEGACIÓN CORREGIDA */
+function showPage(name){
+ const page=$("page-"+name);
+
+ if(!page){
+  console.error("Página no encontrada:",name);
+  return;
+ }
+
+ document.querySelectorAll(".page").forEach(p=>{
+  p.classList.remove("active");
+ });
+
+ page.classList.add("active");
+
+ document.querySelectorAll(".nav-btn[data-page]").forEach(b=>{
+  b.classList.toggle("active",b.dataset.page===name);
+ });
+
  $("chat").classList.remove("show");
+ window.scrollTo({top:0,behavior:"smooth"});
 }
-document.querySelectorAll(".nav-btn[data-page]").forEach(b=>b.onclick=()=>showPage(b.dataset.page));
 
-$("openChat").onclick=$("operatorChat").onclick=()=>$("chat").classList.add("show");
-$("closeChat").onclick=()=>$("chat").classList.remove("show");
+/* Delegación de eventos: navegación */
+document.querySelector(".bottom-nav").addEventListener("click",event=>{
+ const button=event.target.closest(".nav-btn[data-page]");
+ if(!button)return;
+ showPage(button.dataset.page);
+});
 
-function agregar(t,s){
- let d=document.createElement("div");
- d.className=t;
- d.textContent=s;
+/* CHAT */
+function abrirChat(){
+ $("chat").classList.add("show");
+}
+$("openChat").addEventListener("click",abrirChat);
+$("operatorChat").addEventListener("click",abrirChat);
+$("closeChat").addEventListener("click",()=>$("chat").classList.remove("show"));
+
+function agregar(tipo,texto){
+ const d=document.createElement("div");
+ d.className=tipo;
+ d.textContent=texto;
  $("msgs").appendChild(d);
  $("msgs").scrollTop=$("msgs").scrollHeight;
 }
 
 async function responder(){
- let q=$("txt").value.trim();
+ const q=$("txt").value.trim();
  if(!q)return;
+
  agregar("user-msg",q);
  $("txt").value="";
- let l=document.createElement("div");
+
+ const l=document.createElement("div");
  l.className="bot-msg";
  l.textContent="Conectando con MaitaCore...";
  $("msgs").appendChild(l);
+
  try{
-  let r=await fetch(API+"/chat",{
+  const r=await fetch(API+"/chat",{
    method:"POST",
    headers:{"Content-Type":"application/json"},
    body:JSON.stringify({message:q})
   });
-  if(!r.ok)throw Error();
-  let d=await r.json();
+  if(!r.ok)throw new Error("Servidor no disponible");
+
+  const d=await r.json();
   l.textContent=d.reply||"No recibí una respuesta válida.";
  }catch(e){
   l.textContent="No pude conectarme al servidor MaitaCore. Verifica que el backend esté activo.";
  }
 }
-$("send").onclick=responder;
+$("send").addEventListener("click",responder);
 $("txt").addEventListener("keydown",e=>{
  if(e.key==="Enter")responder();
-});async function ensureTestnet(){
- if(!window.ethereum)throw Error("Abre Maita Nova IA desde el navegador de MetaMask.");
- let c=await ethereum.request({method:"eth_chainId"});
- if(BigInt(c)!==REQUIRED_CHAIN_ID){
+});
+
+/* RED BNB TESTNET */
+async function ensureTestnet(){
+ if(!window.ethereum){
+  throw new Error("Abre esta web desde el navegador de MetaMask.");
+ }
+
+ let chain=await window.ethereum.request({method:"eth_chainId"});
+
+ if(BigInt(chain)!==REQUIRED_CHAIN_ID){
   try{
-   await ethereum.request({method:"wallet_switchEthereumChain",params:[{chainId:"0x61"}]});
+   await window.ethereum.request({
+    method:"wallet_switchEthereumChain",
+    params:[{chainId:"0x61"}]
+   });
   }catch(e){
    if(e.code!==4902)throw e;
-   await ethereum.request({
+
+   await window.ethereum.request({
     method:"wallet_addEthereumChain",
     params:[{
      chainId:"0x61",
@@ -620,31 +640,53 @@ $("txt").addEventListener("keydown",e=>{
    });
   }
  }
- provider=new ethers.BrowserProvider(ethereum);
- if((await provider.getNetwork()).chainId!==REQUIRED_CHAIN_ID)
-  throw Error("Selecciona BNB Smart Chain Testnet, Chain ID 97.");
+
+ provider=new ethers.BrowserProvider(window.ethereum);
+
+ const network=await provider.getNetwork();
+ if(network.chainId!==REQUIRED_CHAIN_ID){
+  throw new Error("Selecciona BNB Smart Chain Testnet, Chain ID 97.");
+ }
 }
 
+/* CONTRATO */
 function crearContrato(){
- if(!ethers.isAddress(MAITA_TOKEN_ADDRESS))throw Error("Dirección del contrato no válida.");
+ if(!ethers.isAddress(MAITA_TOKEN_ADDRESS)){
+  throw new Error("Dirección del contrato no válida.");
+ }
  tokenContract=new ethers.Contract(MAITA_TOKEN_ADDRESS,TOKEN_ABI,provider);
 }
 
+/* CONSULTAR SALDO */
 async function refreshTokenBalance(){
  if(!userAddress||!provider)return;
+
  try{
   $("maitaBalance").textContent="Consultando...";
   crearContrato();
-  let [bal,dec,sym,supply]=await Promise.all([
+
+  const [bal,dec,sym,supply]=await Promise.all([
    tokenContract.balanceOf(userAddress),
    tokenContract.decimals(),
    tokenContract.symbol(),
    tokenContract.totalSupply()
   ]);
-  $("maitaBalance").textContent=Number(ethers.formatUnits(bal,dec)).toLocaleString("es-ES",{maximumFractionDigits:4})+" "+sym;
+
+  $("maitaBalance").textContent=
+   Number(ethers.formatUnits(bal,dec)).toLocaleString("es-ES",{maximumFractionDigits:4})+" "+sym;
+
   $("contractStatus").textContent="Contrato conectado: "+MAITA_TOKEN_ADDRESS;
-  setStatus("txStatus","Suministro total: "+Number(ethers.formatUnits(supply,dec)).toLocaleString("es-ES")+" "+sym,"ok");
-  $("sendMaita").disabled=$("refreshBalance").disabled=$("refreshAdmin").disabled=false;
+
+  setStatus(
+   "txStatus",
+   "Suministro total: "+Number(ethers.formatUnits(supply,dec)).toLocaleString("es-ES")+" "+sym,
+   "ok"
+  );
+
+  $("sendMaita").disabled=false;
+  $("refreshBalance").disabled=false;
+  $("refreshAdmin").disabled=false;
+
  }catch(e){
   console.error(e);
   $("maitaBalance").textContent="No disponible";
@@ -653,155 +695,253 @@ async function refreshTokenBalance(){
  }
 }
 
+/* PANEL ADMINISTRADOR */
 async function refreshAdmin(){
  if(!userAddress||!provider){
   setStatus("adminHistory","Conecta MetaMask primero.","warn");
   return;
  }
- let b=$("refreshAdmin");
+
+ const b=$("refreshAdmin");
  b.disabled=true;
  b.textContent="Consultando...";
+
  try{
   crearContrato();
-  let [supply,bal,dec,sym]=await Promise.all([
+
+  const [supply,bal,dec,sym]=await Promise.all([
    tokenContract.totalSupply(),
    tokenContract.balanceOf(userAddress),
    tokenContract.decimals(),
    tokenContract.symbol()
   ]);
-  $("adminSupply").textContent=Number(ethers.formatUnits(supply,dec)).toLocaleString("es-ES")+" "+sym;
-  $("adminBalance").textContent=Number(ethers.formatUnits(bal,dec)).toLocaleString("es-ES")+" "+sym;
-  setStatus("adminHistory","Buscando transferencias por bloques...");
-  let latest=await provider.getBlockNumber();
-  let from=Math.max(0,latest-5000),step=250,all=[];
-  let iface=new ethers.Interface(TOKEN_ABI);
-  let topic=iface.getEvent("Transfer").topicHash;
+
+  $("adminSupply").textContent=
+   Number(ethers.formatUnits(supply,dec)).toLocaleString("es-ES")+" "+sym;
+
+  $("adminBalance").textContent=
+   Number(ethers.formatUnits(bal,dec)).toLocaleString("es-ES")+" "+sym;
+
+  setStatus("adminHistory","Consultando eventos...");
+
+  const latest=await provider.getBlockNumber();
+  const from=Math.max(0,latest-5000);
+  const iface=new ethers.Interface(TOKEN_ABI);
+  const topic=iface.getEvent("Transfer").topicHash;
+  const all=[];
+  const step=250;
+
   for(let start=from;start<=latest;start+=step){
-   let end=Math.min(start+step-1,latest);
-   let logs=await provider.getLogs({
+   const end=Math.min(start+step-1,latest);
+
+   const logs=await provider.getLogs({
     address:MAITA_TOKEN_ADDRESS,
     fromBlock:start,
     toBlock:end,
     topics:[topic]
    });
+
    all.push(...logs);
   }
-  let box=$("adminHistory");
+
+  const box=$("adminHistory");
   box.replaceChildren();
+
   if(!all.length){
    setStatus("adminHistory","No se encontraron transferencias en los últimos 5.000 bloques.");
    return;
   }
+
   all.slice(-10).reverse().forEach(log=>{
-   let parsed=iface.parseLog(log);
-   let item=document.createElement("div");
+   const parsed=iface.parseLog(log);
+   const item=document.createElement("div");
    item.className="history-item";
-   let amount=document.createElement("strong");
-   amount.textContent=Number(ethers.formatUnits(parsed.args.value,dec)).toLocaleString("es-ES")+" "+sym;
-   let parties=document.createElement("span");
+
+   const amount=document.createElement("strong");
+   amount.textContent=
+    Number(ethers.formatUnits(parsed.args.value,dec)).toLocaleString("es-ES")+" "+sym;
+
+   const parties=document.createElement("span");
    parties.textContent="De: "+parsed.args.from+" | Para: "+parsed.args.to;
-   let link=document.createElement("a");
+
+   const link=document.createElement("a");
    link.href="https://testnet.bscscan.com/tx/"+log.transactionHash;
    link.target="_blank";
    link.rel="noopener noreferrer";
    link.textContent="Ver transacción en BscScan";
+
    item.append(amount,parties,link);
    box.appendChild(item);
   });
-  let note=document.createElement("p");
+
+  const note=document.createElement("p");
   note.className="note";
-  note.textContent="Hasta 10 eventos de los últimos 5.000 bloques, consultados en tramos de 250 bloques.";
+  note.textContent="Hasta 10 eventos de los últimos 5.000 bloques.";
   box.appendChild(note);
+
  }catch(e){
   console.error(e);
-  setStatus("adminHistory","Los saldos están correctos, pero el RPC no permitió consultar el historial: "+(e.shortMessage||e.message),"error");
+  setStatus("adminHistory","No se pudo consultar el historial: "+(e.shortMessage||e.message),"error");
  }finally{
   b.disabled=false;
   b.textContent="🔄 Actualizar administración";
  }
 }
-$("refreshAdmin").onclick=refreshAdmin;
 
+$("refreshAdmin").addEventListener("click",refreshAdmin);
+
+/* CONECTAR METAMASK */
 async function connectWallet(){
+ const button=$("connectWallet");
+ button.disabled=true;
+ button.textContent="Conectando...";
+
  try{
-  if(!window.ethereum)throw Error("Abre esta web desde el navegador de MetaMask.");
-  setStatus("walletStatus","Conectando...");
+  if(!window.ethereum){
+   throw new Error("Abre esta web desde el navegador de MetaMask.");
+  }
+
+  setStatus("walletStatus","Conectando con MetaMask...");
+
   await ensureTestnet();
-  let a=await ethereum.request({method:"eth_requestAccounts"});
-  if(!a.length)throw Error("No se seleccionó una cuenta.");
-  userAddress=ethers.getAddress(a[0]);
+
+  const accounts=await window.ethereum.request({
+   method:"eth_requestAccounts"
+  });
+
+  if(!accounts.length){
+   throw new Error("No se seleccionó una cuenta.");
+  }
+
+  userAddress=ethers.getAddress(accounts[0]);
   signer=await provider.getSigner();
+
   $("walletAddress").textContent=userAddress;
   $("copyAddress").disabled=false;
   $("operatorWallet").textContent="Conectada";
+
   setStatus("walletStatus","MetaMask conectada correctamente.","ok");
   setStatus("networkStatus","Conectado a BNB Smart Chain Testnet · Chain ID 97","ok");
+
   await refreshTokenBalance();
-  await refreshAdmin();
   $("operatorState").textContent="WALLET ACTIVA";
+
  }catch(e){
   console.error(e);
   setStatus("walletStatus",e.shortMessage||e.message,"error");
+ }finally{
+  button.disabled=false;
+  button.textContent="🔗 Conectar MetaMask";
  }
 }
-$("connectWallet").onclick=connectWallet;
-$("refreshBalance").onclick=refreshTokenBalance;
 
-$("copyAddress").onclick=async()=>{
+$("connectWallet").addEventListener("click",connectWallet);
+$("refreshBalance").addEventListener("click",refreshTokenBalance);
+
+/* COPIAR DIRECCIÓN */
+$("copyAddress").addEventListener("click",async()=>{
  if(!userAddress)return;
+
  try{
   await navigator.clipboard.writeText(userAddress);
   setStatus("walletStatus","Dirección copiada.","ok");
  }catch(e){
   setStatus("walletStatus","Mantén pulsada la dirección para copiarla.","warn");
  }
-};
+});
 
-$("sendMaita").onclick=async()=>{
+/* ENVIAR MAITA */
+$("sendMaita").addEventListener("click",async()=>{
  try{
-  if(!userAddress||!signer||!tokenContract)throw Error("Conecta MetaMask primero.");
-  let to=$("toAddress").value.trim();
-  let amount=$("sendAmount").value.trim();
-  if(!ethers.isAddress(to))throw Error("Dirección destinataria no válida.");
-  if(!amount||!Number.isFinite(Number(amount))||Number(amount)<=0)
-   throw Error("Introduce una cantidad mayor que cero.");
-  let dec=await tokenContract.decimals();
-  let parsed=ethers.parseUnits(amount,dec);
-  let bal=await tokenContract.balanceOf(userAddress);
-  if(bal<parsed)throw Error("Saldo MAITA insuficiente.");
-  setStatus("txStatus","Confirma en MetaMask.","warn");
-  let tx=await tokenContract.connect(signer).transfer(ethers.getAddress(to),parsed);
+  if(!userAddress||!signer||!tokenContract){
+   throw new Error("Conecta MetaMask primero.");
+  }
+
+  const to=$("toAddress").value.trim();
+  const amount=$("sendAmount").value.trim();
+
+  if(!ethers.isAddress(to)){
+   throw new Error("Dirección destinataria no válida.");
+  }
+
+  if(!amount||!Number.isFinite(Number(amount))||Number(amount)<=0){
+   throw new Error("Introduce una cantidad mayor que cero.");
+  }
+
+  const dec=await tokenContract.decimals();
+  const parsed=ethers.parseUnits(amount,dec);
+  const bal=await tokenContract.balanceOf(userAddress);
+
+  if(bal<parsed){
+   throw new Error("Saldo MAITA insuficiente.");
+  }
+
+  setStatus("txStatus","Confirma la transferencia en MetaMask.","warn");
+
+  const tx=await tokenContract.connect(signer).transfer(
+   ethers.getAddress(to),
+   parsed
+  );
+
   setStatus("txStatus","Transacción enviada: "+tx.hash,"warn");
+
   await tx.wait();
+
   setStatus("txStatus","Transferencia confirmada: "+tx.hash,"ok");
-  $("toAddress").value=$("sendAmount").value="";
+
+  $("toAddress").value="";
+  $("sendAmount").value="";
+
   await refreshTokenBalance();
   await refreshAdmin();
+
  }catch(e){
   console.error(e);
   setStatus("txStatus",e.shortMessage||e.reason||e.message,"error");
  }
-};
+});
 
+/* CAMBIOS DE CUENTA O RED */
 if(window.ethereum){
- ethereum.on?.("accountsChanged",()=>{
-  userAddress=signer=tokenContract=null;
+ window.ethereum.on?.("accountsChanged",()=>{
+  userAddress=null;
+  signer=null;
+  tokenContract=null;
+
   $("maitaBalance").textContent="— MAITA";
   $("walletAddress").textContent="Vuelve a conectar tu billetera.";
-  $("sendMaita").disabled=$("refreshBalance").disabled=$("copyAddress").disabled=$("refreshAdmin").disabled=true;
-  $("adminSupply").textContent=$("adminBalance").textContent="—";
+
+  $("sendMaita").disabled=true;
+  $("refreshBalance").disabled=true;
+  $("copyAddress").disabled=true;
+  $("refreshAdmin").disabled=true;
+
+  $("adminSupply").textContent="—";
+  $("adminBalance").textContent="—";
   $("operatorWallet").textContent="Desconectada";
   $("operatorState").textContent="EN ESPERA";
+
   setStatus("walletStatus","Cuenta cambiada. Conecta otra vez.","warn");
   setStatus("adminHistory","Conecta MetaMask y actualiza.","warn");
  });
- ethereum.on?.("chainChanged",()=>{
-  provider=signer=userAddress=tokenContract=null;
+
+ window.ethereum.on?.("chainChanged",()=>{
+  provider=null;
+  signer=null;
+  userAddress=null;
+  tokenContract=null;
+
   $("maitaBalance").textContent="— MAITA";
-  $("sendMaita").disabled=$("refreshBalance").disabled=$("refreshAdmin").disabled=true;
-  $("adminSupply").textContent=$("adminBalance").textContent="—";
+  $("sendMaita").disabled=true;
+  $("refreshBalance").disabled=true;
+  $("refreshAdmin").disabled=true;
+
+  $("adminSupply").textContent="—";
+  $("adminBalance").textContent="—";
   $("operatorState").textContent="EN ESPERA";
+
   setStatus("networkStatus","La red cambió. Vuelve a conectar MetaMask.","warn");
+  setStatus("walletStatus","Red cambiada. Conecta nuevamente.","warn");
  });
 }
 
